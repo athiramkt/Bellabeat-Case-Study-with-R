@@ -1,0 +1,63 @@
+---
+title: "Bellabeat case study"
+author: "Athira"
+date: "2024-12-02"
+output: html_document
+---
+# Introduction
+This capstone project culminates my Google Data Analytics Professional Certificate program. By utilizing R and RStudio, I've created an interactive HTML report that documents the entire data analysis process, from cleaning and exploration to visualization and interpretation. This report will serve as a valuable resource for both technical and non-technical audiences, providing a clear and concise overview of the findings.
+Table Of Contents
+SCENARIO
+ASK
+PREPARE
+PROCESS
+ANALYZE
+ACT
+## Scenario
+Bellabeat, a high-tech company that manufactures health-focused smart products wants to analyse the usage of one of their products in order to gain insight into how people are already using their smart devices.Then, using this information, she would like high-level recommendations for how these trends can inform Bellabeat marketing strategy.
+## Phase 1. Ask
+### Business Tasks
+Analyze smart device usage data to understand consumer behavior with non-Bellabeat devices and apply these insights to enhance a Bellabeat product.
+### Key stakeholders
+* Urška Sršen: Bellabeat’s co founder and Chief Creative Officer;
+* Sando Mur: Mathematician and Bellabeat cofounder; key member of the Bellabeat executive team;
+* Bellabeat marketing analytics team: A team of data analysts responsible for collecting, analyzing, and reporting data that helps guide Bellabeat’s marketing strategy.
+**Questions to guide the analysis**
+1. What are some trends in smart device usage?
+2. How could these trends apply to Bellabeat customers?
+3. How could these trends help influence Bellabeat marketing strategy?
+
+##Phase 2. Prepare
+###Evaluating Data Validity
+For this case study, we'll analyze public FitBit Fitness Tracker data sourced from Kaggle, comprising personal fitness information voluntarily shared by participants. The dataset presents a comprehensive snapshot of user activity and wellness metrics.
+1. Reliability: The dataset includes data from 30 FitBit users, meeting the minimum sample size requirement for analysis.
+2. Originality: The data was collected by a third party through Amazon Mechanical Turk surveys.
+3. Comprehensiveness: It covers various metrics, including daily active time, activity minutes, sleep duration, step counts, and distance covered.
+4. Current: The data spans one month, from 4/12/2016 to 5/12/2016.
+5. Citations: The original source is unspecified as the data was collected by a third party.
+
+## Install and load packages to setup the environment
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
