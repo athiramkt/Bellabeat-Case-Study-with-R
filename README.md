@@ -49,6 +49,7 @@ library(ggplot2)
 library(dplyr)
 library(knitr)
 ```
+``` r
     ── Attaching core tidyverse packages ──────────────── tidyverse 2.0.0 ──
 ✔ dplyr     1.1.4     ✔ readr     2.1.5
 ✔ forcats   1.0.0     ✔ stringr   1.5.1
@@ -59,6 +60,7 @@ library(knitr)
 ✖ dplyr::filter() masks stats::filter()
 ✖ dplyr::lag()    masks stats::lag()
 ℹ Use the conflicted package to force all conflicts to become errors
+```
 
 **Importing data**
 
@@ -77,6 +79,7 @@ Let’s start with loading our daily and hourly datasets. We’ll create datafra
 #Importing data
 daily_activity <- read_csv("dailyActivity_merged.csv")
 ```
+``` r
 Rows: 940 Columns: 15                                                   
 ── Column specification ────────────────────────────────────────────────
 Delimiter: ","
@@ -86,10 +89,12 @@ dbl (14): Id, TotalSteps, TotalDistance, TrackerDistance, LoggedActi...
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 Session restored from your saved work on 2024-Dec-05 18:37:10 UTC (1 hour ago)
+```
 
 ``` r
 daily_calories <- read_csv("dailyCalories_merged.csv")
 ```
+``` r
 Rows: 940 Columns: 3                                                    
 ── Column specification ────────────────────────────────────────────────
 Delimiter: ","
@@ -98,10 +103,12 @@ dbl (2): Id, Calories
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+```
 
 ``` r
 daily_intensities <- read_csv("dailyIntensities_merged.csv")
 ```
+``` r
 Rows: 940 Columns: 10                                                   
 ── Column specification ────────────────────────────────────────────────
 Delimiter: ","
@@ -110,10 +117,11 @@ dbl (9): Id, SedentaryMinutes, LightlyActiveMinutes, FairlyActiveMin...
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-
+```
 ``` r
 daily_steps <- read_csv("dailySteps_merged.csv")
 ```
+``` r
 Rows: 940 Columns: 3                                                    
 ── Column specification ────────────────────────────────────────────────
 Delimiter: ","
@@ -122,10 +130,12 @@ dbl (2): Id, StepTotal
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+```
 
 ``` r
 daily_sleep <- read_csv("sleepDay_merged.csv")
 ```
+``` r
 Rows: 413 Columns: 5                                                    
 ── Column specification ────────────────────────────────────────────────
 Delimiter: ","
@@ -134,10 +144,12 @@ dbl (4): Id, TotalSleepRecords, TotalMinutesAsleep, TotalTimeInBed
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+```
 
 ``` r
 weight_log <- read_csv("weightLogInfo_merged.csv")
 ```
+``` r
 Rows: 67 Columns: 8                                                     
 ── Column specification ────────────────────────────────────────────────
 Delimiter: ","
@@ -147,10 +159,12 @@ lgl (1): IsManualReport
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+```
 
 ``` r
 hourly_calories <- read_csv("hourlyCalories_merged.csv")
 ```
+``` r
 Rows: 22099 Columns: 3                                                  
 ── Column specification ────────────────────────────────────────────────
 Delimiter: ","
@@ -159,10 +173,12 @@ dbl (2): Id, Calories
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+```
 
 ``` r
 hourly_intensities <- read_csv("hourlyIntensities_merged.csv")
 ```
+``` r
 Rows: 22099 Columns: 4                                                  
 ── Column specification ────────────────────────────────────────────────
 Delimiter: ","
@@ -171,9 +187,11 @@ dbl (3): Id, TotalIntensity, AverageIntensity
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+```
 ``` r
 hourly_steps <- read_csv("hourlySteps_merged.csv")
 ```
+``` r
 Rows: 22099 Columns: 3                                                  
 ── Column specification ────────────────────────────────────────────────
 Delimiter: ","
@@ -182,12 +200,13 @@ dbl (2): Id, StepTotal
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-
+```
 ``` r
 #Since the minute data is huge, we’re only going to import the smallest dataset:
 
 minute_sleep <- read_csv("minuteSleep_merged.csv")
 ```
+``` r
 Rows: 188521 Columns: 4                                                 
 ── Column specification ────────────────────────────────────────────────
 Delimiter: ","
@@ -196,3 +215,4 @@ dbl (3): Id, value, logId
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+```
