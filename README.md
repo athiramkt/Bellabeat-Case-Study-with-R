@@ -48,16 +48,56 @@ library(lubridate)
 library(ggplot2)
 library(dplyr)
 library(knitr)
+
+    ── Attaching core tidyverse packages ──────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package to force all conflicts to become errors
+
 ```
+**Importing data**
 
-     ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-     ✔ dplyr     1.1.1     ✔ readr     2.1.4
-     ✔ forcats   1.0.0     ✔ stringr   1.5.0
-     ✔ ggplot2   3.4.2     ✔ tibble    3.2.1
-     ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
-     ✔ purrr     1.0.1     
-     ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-     ✖ dplyr::filter() masks stats::filter()
-     ✖ dplyr::lag()    masks stats::lag()
-     ℹ Use the ]8;;http://conflicted.r-lib.org/conflicted package]8;; to force all conflicts to become errors
+We’re going to explore data across 18 CSV files. These files track different metrics at three distinct time intervals:
+> 1. Daily summaries, 
+> 2. Hourly breakdowns
+> 3. Minute-by-minute records
 
+The data follows a long format structure, where each session ID appears across multiple rows, with each row representing a single time point. We can identify individual reports using either their export ID or timestamp. 
+
+By examining patterns across these different time scales, we aim to uncover insights that could benefit Bellabeat's customer base.
+
+Let’s start with loading our daily and hourly datasets. We’ll create dataframes for these now:
+
+``` r
+#Importing data
+daily_activity <- read_csv("dailyActivity_merged.csv")
+
+Rows: 940 Columns: 15                                                   
+── Column specification ────────────────────────────────────────────────
+Delimiter: ","
+chr  (1): ActivityDate
+dbl (14): Id, TotalSteps, TotalDistance, TrackerDistance, LoggedActi...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+Session restored from your saved work on 2024-Dec-05 18:37:10 UTC (1 hour ago)
+
+daily_calories <- read_csv("dailyCalories_merged.csv")
+
+Rows: 940 Columns: 3                                                    
+── Column specification ────────────────────────────────────────────────
+Delimiter: ","
+chr (1): ActivityDay
+dbl (2): Id, Calories
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+
+```

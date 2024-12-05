@@ -36,11 +36,32 @@ For this case study, we'll analyze public FitBit Fitness Tracker data sourced fr
 4. Current: The data spans one month, from 4/12/2016 to 5/12/2016.
 5. Citations: The original source is unspecified as the data was collected by a third party.
 
-## Install and load packages to setup the environment
+```r
+#Install and load packages to setup the environment
+install.packages("tidyverse")
+install.packages("ggplot2")
+install.packages("dplyr")
+install.packages("tidyr")
+install.packages("lubridate")
+install.packages("readr")
+install.packages("gridExtra")
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(lubridate)
+library(readr)
+library(gridExtra)
+
+
+#Importing data
+daily_activity <- read_csv("dailyActivity_merged.csv")
 ```
+
+
+
+
 
 ## R Markdown
 
