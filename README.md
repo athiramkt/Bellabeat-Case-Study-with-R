@@ -17,8 +17,11 @@ Bellabeat, a high-tech company that manufactures health-focused smart products w
 ## ASK
 
 **Business Tasks**
+
 Analyze smart device usage data to understand consumer behavior with non-Bellabeat devices and apply these insights to enhance a Bellabeat product.
+
 **Key stakeholders**
+
 > 1. Urška Sršen: Bellabeat’s co founder and Chief Creative Officer;
 > 2. Sando Mur: Mathematician and Bellabeat cofounder; key member of the Bellabeat executive team;
 > 3. Bellabeat marketing analytics team: A team of data analysts responsible for collecting, analyzing, and reporting data that helps guide Bellabeat’s marketing strategy.
@@ -30,10 +33,31 @@ Analyze smart device usage data to understand consumer behavior with non-Bellabe
 
 ## PREPARE
 **Evaluating Data Validity**
+
 For this case study, we'll analyze public FitBit Fitness Tracker data sourced from Kaggle, comprising personal fitness information voluntarily shared by participants. The dataset presents a comprehensive snapshot of user activity and wellness metrics.
 > 1. Reliability: The dataset includes data from 30 FitBit users, meeting the minimum sample size requirement for analysis.
 > 2. Originality: The data was collected by a third party through Amazon Mechanical Turk surveys.
 > 3. Comprehensiveness: It covers various metrics, including daily active time, activity minutes, sleep duration, step counts, and distance covered.
 > 4. Current: The data spans one month, from 4/12/2016 to 5/12/2016.
 > 5. Citations: The original source is unspecified as the data was collected by a third party.
+
+``` r
+#install packages 
+library(tidyverse)
+library(lubridate)
+library(ggplot2)
+library(dplyr)
+library(knitr)
+```
+
+     ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+     ✔ dplyr     1.1.1     ✔ readr     2.1.4
+     ✔ forcats   1.0.0     ✔ stringr   1.5.0
+     ✔ ggplot2   3.4.2     ✔ tibble    3.2.1
+     ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+     ✔ purrr     1.0.1     
+     ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+     ✖ dplyr::filter() masks stats::filter()
+     ✖ dplyr::lag()    masks stats::lag()
+     ℹ Use the ]8;;http://conflicted.r-lib.org/conflicted package]8;; to force all conflicts to become errors
 
