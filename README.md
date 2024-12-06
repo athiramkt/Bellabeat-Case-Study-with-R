@@ -71,9 +71,7 @@ We’re going to explore data across 18 CSV files. These files track different m
 
 The data follows a long format structure, where each session ID appears across multiple rows, with each row representing a single time point. We can identify individual reports using either their export ID or timestamp. 
 
-By examining patterns across these different time scales, we aim to uncover insights that could benefit Bellabeat's customer base.
-
-Let’s start with loading our daily and hourly datasets. We’ll create dataframes for these now:
+By examining patterns across these different time scales, we aim to uncover insights that could benefit Bellabeat's customer base. Let’s start with loading our daily and hourly datasets. We’ll create dataframes for these now:
 
 ``` r
 #Importing data
@@ -215,4 +213,174 @@ dbl (3): Id, value, logId
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+```
+## Process
+
+**Clean Data**: To ensure data quality and consistency, we'll clean and tidy the datasets. This involves handling missing values, outliers, and inconsistencies in data formats.
+
+**Create tibbles** : Let’s take a closer look at the different dataframes. We’ll start by using the head() function to view the first few rows of each one:
+
+Daily dataframes:
+``` r
+head(daily_activity)
+```
+``` r
+# A tibble: 6 × 15
+          Id ActivityDate TotalSteps TotalDistance TrackerDistance LoggedActivitiesDist…¹
+       <dbl> <chr>             <dbl>         <dbl>           <dbl>                  <dbl>
+1 1503960366 4/12/2016         13162          8.5             8.5                       0
+2 1503960366 4/13/2016         10735          6.97            6.97                      0
+3 1503960366 4/14/2016         10460          6.74            6.74                      0
+4 1503960366 4/15/2016          9762          6.28            6.28                      0
+5 1503960366 4/16/2016         12669          8.16            8.16                      0
+6 1503960366 4/17/2016          9705          6.48            6.48                      0
+# ℹ abbreviated name: ¹​LoggedActivitiesDistance
+# ℹ 9 more variables: VeryActiveDistance <dbl>, ModeratelyActiveDistance <dbl>,
+#   LightActiveDistance <dbl>, SedentaryActiveDistance <dbl>, VeryActiveMinutes <dbl>,
+#   FairlyActiveMinutes <dbl>, LightlyActiveMinutes <dbl>, SedentaryMinutes <dbl>,
+#   Calories <dbl>
+```
+``` r
+head(daily_calories)
+```
+``` r
+# A tibble: 6 × 3
+          Id ActivityDay Calories
+       <dbl> <chr>          <dbl>
+1 1503960366 4/12/2016       1985
+2 1503960366 4/13/2016       1797
+3 1503960366 4/14/2016       1776
+4 1503960366 4/15/2016       1745
+5 1503960366 4/16/2016       1863
+6 1503960366 4/17/2016       1728
+```
+``` r
+head(daily_intensities)
+```
+``` r
+# A tibble: 6 × 10
+          Id ActivityDay SedentaryMinutes LightlyActiveMinutes FairlyActiveMinutes
+       <dbl> <chr>                  <dbl>                <dbl>               <dbl>
+1 1503960366 4/12/2016                728                  328                  13
+2 1503960366 4/13/2016                776                  217                  19
+3 1503960366 4/14/2016               1218                  181                  11
+4 1503960366 4/15/2016                726                  209                  34
+5 1503960366 4/16/2016                773                  221                  10
+6 1503960366 4/17/2016                539                  164                  20
+# ℹ 5 more variables: VeryActiveMinutes <dbl>, SedentaryActiveDistance <dbl>,
+#   LightActiveDistance <dbl>, ModeratelyActiveDistance <dbl>, VeryActiveDistance <dbl>
+```
+``` r
+head(daily_steps)
+```
+``` r
+# A tibble: 6 × 3
+          Id ActivityDay StepTotal
+       <dbl> <chr>           <dbl>
+1 1503960366 4/12/2016       13162
+2 1503960366 4/13/2016       10735
+3 1503960366 4/14/2016       10460
+4 1503960366 4/15/2016        9762
+5 1503960366 4/16/2016       12669
+6 1503960366 4/17/2016        9705
+```
+``` r
+head(daily_sleep)
+```
+``` r
+# A tibble: 6 × 5
+          Id SleepDay              TotalSleepRecords TotalMinutesAsleep TotalTimeInBed
+       <dbl> <chr>                             <dbl>              <dbl>          <dbl>
+1 1503960366 4/12/2016 12:00:00 AM                 1                327            346
+2 1503960366 4/13/2016 12:00:00 AM                 2                384            407
+3 1503960366 4/15/2016 12:00:00 AM                 1                412            442
+4 1503960366 4/16/2016 12:00:00 AM                 2                340            367
+5 1503960366 4/17/2016 12:00:00 AM                 1                700            712
+6 1503960366 4/19/2016 12:00:00 AM                 1                304            320
+```
+``` r
+head(weight_log)
+```
+``` r
+# A tibble: 6 × 8
+          Id Date                WeightKg WeightPounds   Fat   BMI IsManualReport   LogId
+       <dbl> <chr>                  <dbl>        <dbl> <dbl> <dbl> <lgl>            <dbl>
+1 1503960366 5/2/2016 11:59:59 …     52.6         116.    22  22.6 TRUE           1.46e12
+2 1503960366 5/3/2016 11:59:59 …     52.6         116.    NA  22.6 TRUE           1.46e12
+3 1927972279 4/13/2016 1:08:52 …    134.          294.    NA  47.5 FALSE          1.46e12
+4 2873212765 4/21/2016 11:59:59…     56.7         125.    NA  21.5 TRUE           1.46e12
+5 2873212765 5/12/2016 11:59:59…     57.3         126.    NA  21.7 TRUE           1.46e12
+6 4319703577 4/17/2016 11:59:59…     72.4         160.    25  27.5 TRUE           1.46e12
+```
+``` r
+head(weight_log)
+```
+``` r
+# A tibble: 6 × 8
+          Id Date                WeightKg WeightPounds   Fat   BMI IsManualReport   LogId
+       <dbl> <chr>                  <dbl>        <dbl> <dbl> <dbl> <lgl>            <dbl>
+1 1503960366 5/2/2016 11:59:59 …     52.6         116.    22  22.6 TRUE           1.46e12
+2 1503960366 5/3/2016 11:59:59 …     52.6         116.    NA  22.6 TRUE           1.46e12
+3 1927972279 4/13/2016 1:08:52 …    134.          294.    NA  47.5 FALSE          1.46e12
+4 2873212765 4/21/2016 11:59:59…     56.7         125.    NA  21.5 TRUE           1.46e12
+5 2873212765 5/12/2016 11:59:59…     57.3         126.    NA  21.7 TRUE           1.46e12
+6 4319703577 4/17/2016 11:59:59…     72.4         160.    25  27.5 TRUE           1.46e12
+```
+Hourly dataframes:
+``` r
+head(hourly_calories)
+```
+``` r
+# A tibble: 6 × 3
+          Id ActivityHour          Calories
+       <dbl> <chr>                    <dbl>
+1 1503960366 4/12/2016 12:00:00 AM       81
+2 1503960366 4/12/2016 1:00:00 AM        61
+3 1503960366 4/12/2016 2:00:00 AM        59
+4 1503960366 4/12/2016 3:00:00 AM        47
+5 1503960366 4/12/2016 4:00:00 AM        48
+6 1503960366 4/12/2016 5:00:00 AM        48
+```
+``` r
+head(hourly_intensities)
+```
+``` r
+# A tibble: 6 × 4
+          Id ActivityHour          TotalIntensity AverageIntensity
+       <dbl> <chr>                          <dbl>            <dbl>
+1 1503960366 4/12/2016 12:00:00 AM             20            0.333
+2 1503960366 4/12/2016 1:00:00 AM               8            0.133
+3 1503960366 4/12/2016 2:00:00 AM               7            0.117
+4 1503960366 4/12/2016 3:00:00 AM               0            0    
+5 1503960366 4/12/2016 4:00:00 AM               0            0    
+6 1503960366 4/12/2016 5:00:00 AM               0            0  
+```
+``` r
+head(hourly_steps)
+```
+``` r
+# A tibble: 6 × 3
+          Id ActivityHour          StepTotal
+       <dbl> <chr>                     <dbl>
+1 1503960366 4/12/2016 12:00:00 AM       373
+2 1503960366 4/12/2016 1:00:00 AM        160
+3 1503960366 4/12/2016 2:00:00 AM        151
+4 1503960366 4/12/2016 3:00:00 AM          0
+5 1503960366 4/12/2016 4:00:00 AM          0
+6 1503960366 4/12/2016 5:00:00 AM          0
+```
+Minute dataframe:
+``` r
+head(minute_sleep)
+```
+``` r
+# A tibble: 6 × 4
+          Id date                 value       logId
+       <dbl> <chr>                <dbl>       <dbl>
+1 1503960366 4/12/2016 2:47:30 AM     3 11380564589
+2 1503960366 4/12/2016 2:48:30 AM     2 11380564589
+3 1503960366 4/12/2016 2:49:30 AM     1 11380564589
+4 1503960366 4/12/2016 2:50:30 AM     1 11380564589
+5 1503960366 4/12/2016 2:51:30 AM     1 11380564589
+6 1503960366 4/12/2016 2:52:30 AM     1 11380564589
 ```
