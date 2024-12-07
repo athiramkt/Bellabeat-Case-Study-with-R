@@ -220,8 +220,7 @@ dbl (3): Id, value, logId
 
 **Create tibbles** : Let’s take a closer look at the different dataframes. We’ll start by using the head() function to view the first few rows of each one:
 
-<details>
-<summary>**Daily dataframes** </summary>
+**Daily dataframes**
 ``` r
 head(daily_activity)
 ```
@@ -327,9 +326,7 @@ head(weight_log)
 5 2873212765 5/12/2016 11:59:59…     57.3         126.    NA  21.7 TRUE           1.46e12
 6 4319703577 4/17/2016 11:59:59…     72.4         160.    25  27.5 TRUE           1.46e12
 ```
-</details>
-<details>
-<summary>**Hourly dataframes**</summary>
+**Hourly dataframes**
 ``` r
 head(hourly_calories)
 ```
@@ -372,9 +369,7 @@ head(hourly_steps)
 5 1503960366 4/12/2016 4:00:00 AM          0
 6 1503960366 4/12/2016 5:00:00 AM          0
 ```
-</details>
-<details>
-<summary>**Minute dataframe**</summary>
+**Minute dataframe**:
 ``` r
 head(minute_sleep)
 ```
@@ -389,7 +384,6 @@ head(minute_sleep)
 5 1503960366 4/12/2016 2:51:30 AM     1 11380564589
 6 1503960366 4/12/2016 2:52:30 AM     1 11380564589
 ```
-</details>
 **View column names**: Now we’ll use the colnames() function to view the column names for each dataframe
 **Daily dataframes**:
 ``` r
@@ -578,6 +572,7 @@ select(Id, SleepDay)
 weight_log %>%
 select(Id, Date)
 ```
+``` r
 # A tibble: 67 × 2
            Id Date                 
         <dbl> <chr>                
@@ -602,5 +597,43 @@ With a clear understanding of the data, we can now proceed with key data cleanin
 > 2. **Resolve Formatting Issues**: Date-time formats will be standardized across all dataframes. This ensures consistency during analysis and prevents issues when merging datasets.
 > 3. **Create New Variables**: Additional columns will be generated within each dataframe to enhance analysis and provide deeper insights.
 > 4. **Transform and Aggregate Sleep Data**: The minute_sleep data will be thoroughly reformatted, with new variables created as needed. Finally, all sleep-related data will be aggregated into a more structured and manageable dataframe for analysis.
+
+**Daily dataframes**
+
+``` r
+#daily_activity ---------------------------
+daily_activity <-
+  daily_activity %>% 
+  rename(
+    activity_date = ActivityDate, 
+    total_steps = TotalSteps, 
+    total_distance = TotalDistance,
+    tracker_distance = TrackerDistance,
+    logged_activities_d = LoggedActivitiesDistance,
+    very_active_d = VeryActiveDistance, 
+    moderately_active_d = ModeratelyActiveDistance, 
+    light_active_d = LightActiveDistance, 
+    sedentary_d = SedentaryActiveDistance, 
+    very_active_m = VeryActiveMinutes, 
+    fairly_active_m = FairlyActiveMinutes, 
+    lightly_active_m = LightlyActiveMinutes, 
+    sedentary_m = SedentaryMinutes, 
+    calories = Calories
+    ) %>% 
+  rename_with(
+    tolower, starts_with("Id")
+  ) %>%
+ mutate(
+    # reformat variable as POSIXct to represent date and time
+    activity_date = parse_date_time(activity_date, "%m/%d/%y"),
+    # create new variable and format as date only
+    activity_date_ymd = as.Date(activity_date, "%Y/%m/%d"),
+    # create new variables for day of week and time of week
+    day_of_week = weekdays(as.Date(activity_date)),
+    time_of_week = case_when(
+      day_of_week %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday") ~ "Weekday", 
+      day_of_week %in% c("Saturday", "Sunday") ~ "Weekend")
+    )
+```
 
 
