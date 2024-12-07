@@ -634,6 +634,122 @@ daily_activity <-
       day_of_week %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday") ~ "Weekday", 
       day_of_week %in% c("Saturday", "Sunday") ~ "Weekend")
     )
+
+# daily_calories ---------------------------
+daily_calories <-
+  daily_calories %>% 
+  rename(
+    activity_date = ActivityDay,
+    calories = Calories
+  ) %>% 
+   rename_with(
+    tolower, starts_with("Id")
+  ) %>%
+
+
+ mutate(
+    activity_date = parse_date_time(activity_date, "%m/%d/%Y"),
+    activity_date_ymd = as.Date(activity_date, "%Y/%m/%d"),
+    day_of_week = weekdays(as.Date(activity_date)),
+    time_of_week = case_when(
+      day_of_week %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday") ~ "Weekday", 
+      day_of_week %in% c("Saturday", "Sunday") ~ "Weekend")
+  )
+
+
+# daily_intensities ---------------------------
+daily_intensities <-
+  daily_intensities %>% 
+  rename(
+    activity_date = ActivityDay,
+    very_active_d = VeryActiveDistance, 
+    moderately_active_d = ModeratelyActiveDistance, 
+    light_active_d = LightActiveDistance, 
+    sedentary_d = SedentaryActiveDistance, 
+    very_active_m = VeryActiveMinutes, 
+    fairly_active_m = FairlyActiveMinutes, 
+    lightly_active_m = LightlyActiveMinutes, 
+    sedentary_m = SedentaryMinutes, 
+  ) %>% 
+   rename_with(
+    tolower, starts_with("Id")
+  ) %>% 
+  mutate(
+
+activity_date = parse_date_time(activity_date, "%m/%d/%Y"),
+    activity_date_ymd = as.Date(activity_date, "%Y/%m/%d"),
+    day_of_week = weekdays(as.Date(activity_date)),
+    time_of_week = case_when(
+      day_of_week %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday") ~ "Weekday", 
+      day_of_week %in% c("Saturday", "Sunday") ~ "Weekend")
+  )
+
+# daily_sleep ---------------------------
+daily_sleep <-
+  daily_sleep %>% 
+  rename(
+    activity_date = SleepDay,
+    total_sleep_records = TotalSleepRecords,
+    total_minutes_asleep = TotalMinutesAsleep,
+    total_time_in_bed = TotalTimeInBed
+  ) %>% 
+   rename_with(
+    tolower, starts_with("Id")
+  ) %>% 
+  mutate(
+    activity_date = parse_date_time(activity_date, "%m/%d/%Y %I:%M:%S %p"),
+    activity_date_ymd = as.Date(activity_date, "%Y/%m/%d"),
+    day_of_week = weekdays(as.Date(activity_date)),
+    time_of_week = case_when(
+      day_of_week %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday") ~ "Weekday", 
+      day_of_week %in% c("Saturday", "Sunday") ~ "Weekend")
+    )
+    
+# daily_steps ---------------------------
+daily_steps <-
+  daily_steps %>% 
+  rename(
+    activity_date = ActivityDay,
+    step_total = StepTotal
+  ) %>% 
+   rename_with(
+    tolower, starts_with("Id")
+  ) %>% 
+  mutate(
+    activity_date = parse_date_time(activity_date, "%m/%d/%Y"),
+    activity_date_ymd = as.Date(activity_date, "%Y/%m/%d"),
+    day_of_week = weekdays(as.Date(activity_date)),
+    time_of_week = case_when(
+      day_of_week %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday") ~ "Weekday", 
+      day_of_week %in% c("Saturday", "Sunday") ~ "Weekend")
+  )
+  
+# weight_log ---------------------------
+weight_log <-
+  weight_log %>% 
+  rename(
+    activity_date = Date,
+    weight_kg = WeightKg,
+    weight_lb = WeightPounds,
+    fat = Fat,
+    bmi = BMI,
+    manual_report = IsManualReport,
+    log_id = LogId
+  ) %>% 
+   rename_with(
+    tolower, starts_with("Id")
+  ) %>% 
+  mutate(
+    activity_date = parse_date_time(activity_date, "%m/%d/%Y %I:%M:%S %p"),
+    activity_date_ymd = as.Date(activity_date, "%Y/%m/%d"),
+    activity_time = format(activity_date, format = "%I:%M:%S %p"), 
+    day_of_week = weekdays(as.Date(activity_date)),
+    time_of_week = case_when(
+      day_of_week %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday") ~ "Weekday", 
+      day_of_week %in% c("Saturday", "Sunday") ~ "Weekend"),
+    hour_of_day = as.POSIXct(activity_date, format = "%I:%M:%S %p")
+  )
 ```
+
 
 
