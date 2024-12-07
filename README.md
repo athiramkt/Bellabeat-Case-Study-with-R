@@ -220,7 +220,7 @@ dbl (3): Id, value, logId
 
 **Create tibbles** : Let’s take a closer look at the different dataframes. We’ll start by using the head() function to view the first few rows of each one:
 
-Daily dataframes:
+**Daily dataframes**:
 ``` r
 head(daily_activity)
 ```
@@ -326,7 +326,7 @@ head(weight_log)
 5 2873212765 5/12/2016 11:59:59…     57.3         126.    NA  21.7 TRUE           1.46e12
 6 4319703577 4/17/2016 11:59:59…     72.4         160.    25  27.5 TRUE           1.46e12
 ```
-Hourly dataframes:
+**Hourly dataframes**:
 ``` r
 head(hourly_calories)
 ```
@@ -369,7 +369,7 @@ head(hourly_steps)
 5 1503960366 4/12/2016 4:00:00 AM          0
 6 1503960366 4/12/2016 5:00:00 AM          0
 ```
-Minute dataframe:
+**Minute dataframe**:
 ``` r
 head(minute_sleep)
 ```
@@ -384,3 +384,208 @@ head(minute_sleep)
 5 1503960366 4/12/2016 2:51:30 AM     1 11380564589
 6 1503960366 4/12/2016 2:52:30 AM     1 11380564589
 ```
+**View column names**: Now we’ll use the colnames() function to view the column names for each dataframe
+**Daily dataframes**:
+``` r
+colnames(daily_activity)
+```
+``` r
+[1] "Id"                       "ActivityDate"             "TotalSteps"              
+ [4] "TotalDistance"            "TrackerDistance"          "LoggedActivitiesDistance"
+ [7] "VeryActiveDistance"       "ModeratelyActiveDistance" "LightActiveDistance"     
+[10] "SedentaryActiveDistance"  "VeryActiveMinutes"        "FairlyActiveMinutes"     
+[13] "LightlyActiveMinutes"     "SedentaryMinutes"         "Calories"
+```
+``` r
+colnames(daily_calories)
+```
+``` r
+[1] "Id"          "ActivityDay" "Calories"  
+```
+``` r
+colnames(daily_intensities)
+```
+``` r
+ [1] "Id"                       "ActivityDay"              "SedentaryMinutes"        
+ [4] "LightlyActiveMinutes"     "FairlyActiveMinutes"      "VeryActiveMinutes"       
+ [7] "SedentaryActiveDistance"  "LightActiveDistance"      "ModeratelyActiveDistance"
+[10] "VeryActiveDistance"
+```
+``` r
+colnames(daily_steps)
+```
+``` r
+[1] "Id"          "ActivityDay" "StepTotal" 
+```
+``` r
+colnames(daily_sleep)
+```
+``` r
+[1] "Id"                 "SleepDay"           "TotalSleepRecords"  "TotalMinutesAsleep"
+[5] "TotalTimeInBed"
+```
+``` r
+colnames(weight_log)
+```
+``` r
+[1] "Id"             "Date"           "WeightKg"       "WeightPounds"   "Fat"           
+[6] "BMI"            "IsManualReport" "LogId"
+```
+**Hourly dataframes**:
+``` r
+colnames(hourly_calories)
+```
+``` r
+[1] "Id"           "ActivityHour" "Calories" 
+```
+``` r
+colnames(hourly_intensities)
+```
+``` r
+[1] "Id"               "ActivityHour"     "TotalIntensity"   "AverageIntensity"
+```
+``` r
+colnames(hourly_steps)
+```
+``` r
+[1] "Id"           "ActivityHour" "StepTotal"   
+```
+```
+**Minute dataframes**:
+
+``` r
+colnames(minute_sleep)
+```
+``` r
+[1] "Id"    "date"  "value" "logId"
+```
+**Viewing Variables**
+
+Each dataframe contains an **Id field**, which can serve as a key to merge them into comprehensive datasets (e.g., daily or hourly dataframes). However, the formatting of the activity date/time variables appears inconsistent across some dataframes. To investigate further, we use the select() function to isolate and examine these variables more closely.
+``` r
+daily_activity %>%
+  select(Id, ActivityDate)
+```
+
+``` r
+# A tibble: 940 × 2
+           Id ActivityDate
+        <dbl> <chr>       
+ 1 1503960366 4/12/2016   
+ 2 1503960366 4/13/2016   
+ 3 1503960366 4/14/2016   
+ 4 1503960366 4/15/2016   
+ 5 1503960366 4/16/2016   
+ 6 1503960366 4/17/2016   
+ 7 1503960366 4/18/2016   
+ 8 1503960366 4/19/2016   
+ 9 1503960366 4/20/2016   
+10 1503960366 4/21/2016   
+# ℹ 930 more rows
+# ℹ Use `print(n = ...)` to see more rows
+```
+``` r
+daily_calories %>%
+  select(Id, ActivityDay)
+```
+``` r
+# A tibble: 940 × 2
+           Id ActivityDay
+        <dbl> <chr>      
+ 1 1503960366 4/12/2016  
+ 2 1503960366 4/13/2016  
+ 3 1503960366 4/14/2016  
+ 4 1503960366 4/15/2016  
+ 5 1503960366 4/16/2016  
+ 6 1503960366 4/17/2016  
+ 7 1503960366 4/18/2016  
+ 8 1503960366 4/19/2016  
+ 9 1503960366 4/20/2016  
+10 1503960366 4/21/2016  
+# ℹ 930 more rows
+# ℹ Use `print(n = ...)` to see more rows
+```
+``` r
+daily_intensities %>%
+select(Id, ActivityDay)
+```
+``` r
+# A tibble: 940 × 2
+           Id ActivityDay
+        <dbl> <chr>      
+ 1 1503960366 4/12/2016  
+ 2 1503960366 4/13/2016  
+ 3 1503960366 4/14/2016  
+ 4 1503960366 4/15/2016  
+ 5 1503960366 4/16/2016  
+ 6 1503960366 4/17/2016  
+ 7 1503960366 4/18/2016  
+ 8 1503960366 4/19/2016  
+ 9 1503960366 4/20/2016  
+10 1503960366 4/21/2016  
+# ℹ 930 more rows
+# ℹ Use `print(n = ...)` to see more rows
+```
+``` r
+daily_steps %>%
+select(Id, ActivityDay)
+```
+``` r
+# A tibble: 940 × 2
+           Id ActivityDay
+        <dbl> <chr>      
+ 1 1503960366 4/12/2016  
+ 2 1503960366 4/13/2016  
+ 3 1503960366 4/14/2016  
+ 4 1503960366 4/15/2016  
+ 5 1503960366 4/16/2016  
+ 6 1503960366 4/17/2016  
+ 7 1503960366 4/18/2016  
+ 8 1503960366 4/19/2016  
+ 9 1503960366 4/20/2016  
+10 1503960366 4/21/2016  
+# ℹ 930 more rows
+# ℹ Use `print(n = ...)` to see more rows
+```
+``` r
+daily_sleep %>%
+select(Id, SleepDay)
+```
+``` r
+# A tibble: 413 × 2
+           Id SleepDay             
+        <dbl> <chr>                
+ 1 1503960366 4/12/2016 12:00:00 AM
+ 2 1503960366 4/13/2016 12:00:00 AM
+ 3 1503960366 4/15/2016 12:00:00 AM
+ 4 1503960366 4/16/2016 12:00:00 AM
+ 5 1503960366 4/17/2016 12:00:00 AM
+ 6 1503960366 4/19/2016 12:00:00 AM
+ 7 1503960366 4/20/2016 12:00:00 AM
+ 8 1503960366 4/21/2016 12:00:00 AM
+ 9 1503960366 4/23/2016 12:00:00 AM
+10 1503960366 4/24/2016 12:00:00 AM
+# ℹ 403 more rows
+# ℹ Use `print(n = ...)` to see more rows
+```
+``` r
+weight_log %>%
+select(Id, Date)
+
+# A tibble: 67 × 2
+           Id Date                 
+        <dbl> <chr>                
+ 1 1503960366 5/2/2016 11:59:59 PM 
+ 2 1503960366 5/3/2016 11:59:59 PM 
+ 3 1927972279 4/13/2016 1:08:52 AM 
+ 4 2873212765 4/21/2016 11:59:59 PM
+ 5 2873212765 5/12/2016 11:59:59 PM
+ 6 4319703577 4/17/2016 11:59:59 PM
+ 7 4319703577 5/4/2016 11:59:59 PM 
+ 8 4558609924 4/18/2016 11:59:59 PM
+ 9 4558609924 4/25/2016 11:59:59 PM
+10 4558609924 5/1/2016 11:59:59 PM 
+# ℹ 57 more rows
+# ℹ Use `print(n = ...)` to see more rows
+```
+**Findings** : The weight log and sleep records contain fewer entries compared to other datasets.
