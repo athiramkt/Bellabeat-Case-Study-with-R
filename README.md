@@ -1189,12 +1189,180 @@ ggplot(data = daily_activity, aes(x = lightly_active_m, y = calories)) +
 ```
 ![Descriptive Alt Text](Rplot3.png)
 ``` r
+cor.test(daily_activity$lightly_active_m, daily_activity$calories, method = "pearson")
 ```
 ``` r
+	Pearson's product-moment correlation
+
+data:  daily_activity$lightly_active_m and daily_activity$calories
+t = 9.1661, df = 938, p-value < 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.2269361 0.3443464
+sample estimates:
+      cor 
+0.2867175
+```
+The relationship between lightly_active_m and calories remains positive but is noticeably weaker. This suggests that lightly_active_m likely has a smaller influence on the total calories burned over the course of a day.
+
+**Daily calories**
+
+What’s the relationship between calories and day of the week?
+
+``` r
+#Create labels and limits for plot ---------------------------
+labels_weekdays <- c(
+  "Monday" = "Monday", "Tuesday" = "Tuesday",
+  "Wednesday" = "Wednesday", "Thursday" = "Thursday",
+  "Friday" = "Friday", "Saturday" = "Saturday",
+  "Sunday" = "Sunday"
+  )
+limits_weekdays <- c(
+  "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
+  "Saturday", "Sunday"
+  )
 ```
 ``` r
+#Calories vs day of week plot ---------------------------
+ggplot(data = daily_activity) +
+  geom_point(
+    aes(x = day_of_week, y = calories, color = as.factor(time_of_week)),
+    position = "jitter", 
+    alpha = 0.3
+    ) +
+  labs(title = "Daily calories throughout the week", color = "Time of week") +
+  ylab("Total Calories") +
+  scale_x_discrete(
+    "Day",
+    labels = labels_weekdays, 
+    limits = limits_weekdays,
+    guide = guide_axis(angle = 45)
+    ) +
+  stat_summary(
+    aes(x = day_of_week, y = calories),
+    fun = mean, 
+    geom = "point",
+    color = "red", 
+    size = 2, 
+    alpha = 0.7
+    ) +
+  theme_minimal()
 ```
+![Descriptive Alt Text](Rplot4.png)
+
+There appears to be minimal variation in the average calories burned per day, as indicated by the red dots representing daily averages.
+
+**Daily Sleep**
+
+How does sleep quality vary by time of the week? One might anticipate better sleep quality on weekends compared to weekdays, but are there any surprising patterns or trends?
+
 ``` r
+#Total minutes asleep vs time of week ---------------------------
+ggplot(data = sleep_data) +
+  geom_point(
+    aes(
+    x = weekdays.POSIXt(activity_date), 
+    y = total_asleep_merged,
+    color = as.factor(time_of_week)
+    ),
+  position = "jitter",
+  alpha = 0.3
+  ) +
+  labs(title = "Total minutes asleep throughout week") +
+  guides(color = "none") +
+  ylab("Minutes asleep") +
+  scale_x_discrete(
+    "Day",
+    labels = labels_weekdays, 
+    limits = limits_weekdays,
+    guide = guide_axis(angle = 45)
+    ) +
+  stat_summary(
+    aes(x = weekdays.POSIXt(activity_date), y = total_asleep_merged),
+    fun = mean, 
+    geom = "point", 
+    color = "red", 
+    size = 2,
+    alpha = 0.7
+    ) +
+  theme_minimal()
 ```
+![Descriptive Alt Text](Rplot5.png)
+
+``` r
+#Total minutes restless vs time of week ---------------------------
+ggplot(data = sleep_data) +
+  geom_point(
+    aes(
+    x = weekdays.POSIXt(activity_date), 
+    y = total_restless_merged,
+    color = as.factor(time_of_week)
+    ),
+  position = "jitter",
+  alpha = 0.3
+  ) +
+  labs(title = "Total minutes restless throughout week") +
+  guides(color = "none") +
+  ylab("Minutes restless") +
+  scale_x_discrete(
+    "Day",
+    labels = labels_weekdays, 
+    limits = limits_weekdays,
+    guide = guide_axis(angle = 45)
+    ) +
+  stat_summary(
+    aes(x = weekdays.POSIXt(activity_date), y = total_restless_merged),
+    fun = mean, 
+    geom = "point", 
+    color = "red", 
+    size = 2,
+    alpha = 0.7
+    ) +
+  theme_minimal()
+  ```
+![Descriptive Alt Text](Rplot6.png)
+
+ ``` r
+# Total minutes awake vs time of week ---------------------------
+ggplot(data = sleep_data) +
+  geom_point(
+    aes(
+      x = weekdays.POSIXt(activity_date), 
+      y = total_awake_merged,
+      color = as.factor(time_of_week)
+      ),
+    position = "jitter",
+    alpha = 0.3
+    ) +
+  labs(title = "Total minutes awake throughout week") +
+  guides(color = "none") +
+  ylab("Minutes awake") +
+  scale_x_discrete(
+    "Day",
+    labels = labels_weekdays, 
+    limits = limits_weekdays,
+    guide = guide_axis(angle = 45)
+    ) +
+  stat_summary(
+    aes(x = weekdays.POSIXt(activity_date), y = total_awake_merged),
+    fun = mean, 
+    geom = "point", 
+    color = "red", 
+    size = 2,
+    alpha = 0.7
+    ) +
+  theme_minimal()
+ ```
+ ![Descriptive Alt Text](Rplot7.png)
+ 
+Based on the daily averages shown in the graphs (red dots):
+> 1. **Total Minutes Asleep**: The highest averages were observed on Sunday, Wednesday, and Saturday.
+> 2. **Minutes Awake and Restless**: These metrics peaked on Sunday and Saturday.
+
+While people tend to sleep more on weekends, the data does not indicate an improvement in sleep quality, as minutes awake and minutes restless remain elevated.
+
+**Merging Data**
+From the initial analysis, active minutes appear to offer more valuable customer insights compared to total steps, calories, or sleep. To explore this metric further, it’s beneficial to merge relevant datasets.
+
 ``` r
 ```
