@@ -1126,8 +1126,7 @@ ggplot(data = daily_activity, aes(x = total_steps, y = calories)) +
   xlab("Total Steps") +
   theme_minimal()
 ```
-<p align="center">
-  <img src="Rplot1">
+![Descriptive Alt Text](Rplot1.png)
   
 ``` r
 ```
