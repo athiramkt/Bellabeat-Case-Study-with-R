@@ -895,12 +895,62 @@ After completing in-depth cleaning and formatting, we can now explore the data f
 > A. Unique participants
 How many unique participants are there in each dataframe?
 
-**Daily dataframes
+**Daily dataframes**
 
 ``` r
-# There are 33 users (one user per unique id) in the daily activity df
+#There are 33 users (one user per unique id) in the daily activity df
 n_distinct(daily_activity$id)
 ```
 ``` r
 [1] 33
+```
+``` r
+#There are 24 users (one user per unique id) in the sleep dfs
+n_distinct(daily_sleep$id)
+```
+``` r
+[1] 24
+```
+``` r
+n_distinct(sleep_data$id)
+```
+``` r
+[1] 24
+```
+``` r
+#There are 8 users (one user per unique id) in the weight df
+n_distinct(weight_log$Id)
+```
+``` r
+[1] 8
+```
+> B. Total observations
+
+How many observations are there in each dataframe?
+
+``` r
+#The observations vary across the daily dfs
+nrow(daily_activity)
+[1] 940
+
+nrow(daily_sleep)
+[1] 413
+
+nrow(sleep_data)
+[1] 452
+
+nrow(weight_log)
+[1] 67
+```
+``` r
+```
+``` r
+```
+``` r
+```
+``` r
+```
+``` r
+```
+``` r
 ```
