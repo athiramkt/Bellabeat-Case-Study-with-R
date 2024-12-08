@@ -924,10 +924,30 @@ n_distinct(weight_log$Id)
 ``` r
 [1] 8
 ```
+**Hourly dataframes
+``` r
+# There are 33 users (one user per unique id) in the hourly dfs
+n_distinct(hourly_calories$id)
+[1] 33
+
+n_distinct(hourly_intensities$id)
+[1] 33
+
+n_distinct(hourly_intensities$id)
+[1] 33
+```
+**Minute dataframe
+``` r
+# There are 24 users (one user per unique id) in the minute df
+n_distinct(minute_sleep$id)
+[1] 24
+```
+
 > B. Total observations
 
 How many observations are there in each dataframe?
 
+**Daily dataframes**
 ``` r
 #The observations vary across the daily dfs
 nrow(daily_activity)
@@ -942,15 +962,172 @@ nrow(sleep_data)
 nrow(weight_log)
 [1] 67
 ```
+**Hourly dataframes**
 ``` r
+# There are 22099 observations in each hourly dataframe
+nrow(hourly_calories)
+[1] 22099
+
+nrow(hourly_intensities)
+[1] 22099
+
+nrow(hourly_steps)
+[1] 22099
+```
+**Minute dataframe**
+
+``` r
+# There are 188521 observations in the minute dataframe
+nrow(minute_sleep)
+[1] 188521
+```
+> C. Quick overview
+
+What are some quick summary statistics we’d want to know about each dataframe?
+
+** Daily dataframes**
+``` r
+#Daily totals for steps, distance, calories ---------------------------
+daily_activity %>%
+  select(
+    total_steps,
+    total_distance,
+    calories
+  ) %>%
+  summary()
 ```
 ``` r
+total_steps    total_distance      calories   
+ Min.   :    0   Min.   : 0.000   Min.   :   0  
+ 1st Qu.: 3790   1st Qu.: 2.620   1st Qu.:1828  
+ Median : 7406   Median : 5.245   Median :2134  
+ Mean   : 7638   Mean   : 5.490   Mean   :2304  
+ 3rd Qu.:10727   3rd Qu.: 7.713   3rd Qu.:2793  
+ Max.   :36019   Max.   :28.030   Max.   :4900  
 ```
 ``` r
+#Active minute levels per category ---------------------------
+daily_activity %>%
+  select(
+    very_active_m,
+    fairly_active_m,
+    lightly_active_m,
+    sedentary_m
+  ) %>%
+  summary()
 ```
 ``` r
+very_active_m    fairly_active_m  lightly_active_m  sedentary_m    
+ Min.   :  0.00   Min.   :  0.00   Min.   :  0.0    Min.   :   0.0  
+ 1st Qu.:  0.00   1st Qu.:  0.00   1st Qu.:127.0    1st Qu.: 729.8  
+ Median :  4.00   Median :  6.00   Median :199.0    Median :1057.5  
+ Mean   : 21.16   Mean   : 13.56   Mean   :192.8    Mean   : 991.2  
+ 3rd Qu.: 32.00   3rd Qu.: 19.00   3rd Qu.:264.0    3rd Qu.:1229.5  
+ Max.   :210.00   Max.   :143.00   Max.   :518.0    Max.   :1440.0  
 ```
 ``` r
+#Sleep totals ---------------------------
+#for records, minutes asleep, and time in bed
+daily_sleep %>%
+  select(
+    total_sleep_records,
+    total_minutes_asleep,
+    total_time_in_bed
+  ) %>%
+  summary()
 ```
+``` r
+total_sleep_records total_minutes_asleep total_time_in_bed
+ Min.   :1.000       Min.   : 58.0        Min.   : 61.0    
+ 1st Qu.:1.000       1st Qu.:361.0        1st Qu.:403.0    
+ Median :1.000       Median :433.0        Median :463.0    
+ Mean   :1.119       Mean   :419.5        Mean   :458.6    
+ 3rd Qu.:1.000       3rd Qu.:490.0        3rd Qu.:526.0    
+ Max.   :3.000       Max.   :796.0        Max.   :961.0    
+```
+``` r
+#Sleep totals per category ---------------------------
+sleep_data %>%
+  select(
+    total_minutes_asleep, 
+    total_time_in_bed,
+    total_asleep_merged,
+    total_restless_merged,
+    total_awake_merged
+  ) %>%
+  summary()
+```
+``` r
+total_minutes_asleep total_time_in_bed total_asleep_merged
+ Min.   : 58.0        Min.   : 61.0     Min.   :  0.0      
+ 1st Qu.:361.0        1st Qu.:403.0     1st Qu.:325.0      
+ Median :433.0        Median :463.0     Median :407.5      
+ Mean   :419.5        Mean   :458.6     Mean   :384.8      
+ 3rd Qu.:490.0        3rd Qu.:526.0     3rd Qu.:477.0      
+ Max.   :796.0        Max.   :961.0     Max.   :778.0      
+ NA's   :39           NA's   :39                           
+ total_restless_merged total_awake_merged
+ Min.   :  0.00        Min.   :  0.000   
+ 1st Qu.: 11.00        1st Qu.:  0.000   
+ Median : 20.00        Median :  3.000   
+ Mean   : 31.17        Mean   :  4.469   
+ 3rd Qu.: 31.00        3rd Qu.:  5.000   
+ Max.   :227.00        Max.   :129.000  
+```
+``` r
+#Weight totals ---------------------------
+weight_log %>%
+  select(
+    weight_lb,
+    fat,
+    bmi
+  ) %>%
+  summary()
+```
+``` r
+weight_lb          fat             bmi       
+ Min.   :116.0   Min.   :22.00   Min.   :21.45  
+ 1st Qu.:135.4   1st Qu.:22.75   1st Qu.:23.96  
+ Median :137.8   Median :23.50   Median :24.39  
+ Mean   :158.8   Mean   :23.50   Mean   :25.19  
+ 3rd Qu.:187.5   3rd Qu.:24.25   3rd Qu.:25.56  
+ Max.   :294.3   Max.   :25.00   Max.   :47.54  
+                 NA's   :65                     
+```
+
+> D. Key Observations from the Data
+The analysis reveals several insights into the activity patterns of this sample group:
+> 1. Daily Steps: The average total steps per day is **7,638**, falling below the commonly recommended goal of **10,000** steps per day.
+
+> 2. Sedentary Behavior: Participants spend an average of **991.2** minutes per day in sedentary activities, equivalent to **16.5** hours daily, making it the highest tracked activity category.
+
+> 3. Lightly Active Minutes: The average Lightly Active minutes per day is **192.8**, the highest among non-sedentary activities. Comparatively, participants average **21.16** Very Active minutes and **13.56** Fairly Active minutes per day.
+
+> 4. Moderate to Vigorous Activity: The combined daily average of Very Active and Fairly Active minutes is 34.72 minutes, suggesting participants may meet the WHO recommendation of 150 minutes of moderate-intensity physical activity per week.
+
+> 5. Sleep Efficiency: The average percentage of time asleep while in bed is **91.5%**, calculated as Total Minutes Asleep **(419.5)** divided by Total Time in Bed **(458.6)**.
+
+> 6. Calories Burned: Participants burn an average of **97.39** calories per hour.
+
+These findings provide a detailed overview of the sample group's activity and lifestyle habits, highlighting areas such as physical activity levels and sleep patterns.
+
+**Visualizing Explorations: Steps and Active Minutes**
+
+The widely promoted goal of 10,000 steps per day is a common benchmark in the smart device industry. However, how significant is daily step count as a health metric? 
+For instance, what is the relationship between total steps and calories burned? Let's explore this connection through visualizations.
+
+``` r
+# Total steps vs calories plot ---------------------------
+ggplot(data = daily_activity, aes(x = total_steps, y = calories)) +
+  geom_point() +
+  geom_smooth() + # Trend line with a shadow representing  95% confidence interval
+  labs(title = "Total steps vs calories") +
+  ylab("Calories") +
+  xlab("Total Steps") +
+  theme_minimal()
+```
+<p align="center">
+  <img src="Rplot1">
+  
 ``` r
 ```
