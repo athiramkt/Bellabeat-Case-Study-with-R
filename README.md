@@ -1364,5 +1364,58 @@ While people tend to sleep more on weekends, the data does not indicate an impro
 **Merging Data**
 From the initial analysis, active minutes appear to offer more valuable customer insights compared to total steps, calories, or sleep. To explore this metric further, it’s beneficial to merge relevant datasets.
 
+**Creating daily_data**
+
+We will combine the daily_activity, sleep_data, and weight_log datasets into a single dataframe, daily_data. The daily_calories, daily_intensities, and daily_steps datasets will be excluded, as their information is already aggregated within the daily_activity dataframe.
+
 ``` r
+#Merging daily data into one df ---------------------------
+daily_data_0 <-
+  merge(
+    x = daily_activity, y = sleep_data,
+    by = c("id", "activity_date_ymd", "day_of_week", "time_of_week"), 
+    all.x = TRUE
+  )
+daily_data <-
+  merge(
+    x = daily_data_0, y = weight_log,
+    by = c("id", "activity_date_ymd", "day_of_week", "time_of_week"), all.x = TRUE
+  )
+#Add two new active minute variables to daily data ---------------------------
+daily_data <-
+  daily_data %>%
+  mutate(
+    daily_mod_vig_m = fairly_active_m + very_active_m, 
+    daily_light_sed_m = lightly_active_m + sedentary_m
+  )
+```
+**Creating hourly_data**
+
+Now we’ll combine hourly_calories, hourly_intensities, and hourly_steps into one hourly_data dataframe:
+
+```r
+#Merging hourly data into one df  ---------------------------
+hourly_data_0 <-
+  merge(
+    x = hourly_calories, y = hourly_intensities,
+    by = c(
+      "id", "activity_hour", "activity_date_ymd", "activity_time", "hour_of_day", 
+      "day_of_week", "time_of_week"
+    ),
+    all.x = TRUE, no.dups = TRUE
+  )
+hourly_data <-
+  merge(
+    x = hourly_data_0, y = hourly_steps,
+    by = c(
+      "id", "activity_hour", "activity_date_ymd", "activity_time", "hour_of_day", 
+      "day_of_week", "time_of_week"
+    ),
+    all.x = TRUE
+  )
+```
+**Creating weekly_data**
+```r
+```
+```r
 ```
