@@ -43,8 +43,11 @@ For this case study, we'll analyze public FitBit Fitness Tracker data sourced fr
 
 ``` r
 #install packages 
+install.packages('tidyverse')
 library(tidyverse)
+install.packages('lubridate')
 library(lubridate)
+install.packages('ggplot2')
 library(ggplot2)
 library(dplyr)
 library(knitr)
@@ -599,9 +602,8 @@ With a clear understanding of the data, we can now proceed with key data cleanin
 > 4. **Transform and Aggregate Sleep Data**: The minute_sleep data will be thoroughly reformatted, with new variables created as needed. Finally, all sleep-related data will be aggregated into a more structured and manageable dataframe for analysis.
 
 **Daily dataframes**
-
 ``` r
-#daily_activity ---------------------------
+# daily_activity ---------------------------
 daily_activity <-
   daily_activity %>% 
   rename(
@@ -622,8 +624,8 @@ daily_activity <-
     ) %>% 
   rename_with(
     tolower, starts_with("Id")
-  ) %>%
- mutate(
+  ) %>% 
+  mutate(
     # reformat variable as POSIXct to represent date and time
     activity_date = parse_date_time(activity_date, "%m/%d/%y"),
     # create new variable and format as date only
@@ -634,7 +636,8 @@ daily_activity <-
       day_of_week %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday") ~ "Weekday", 
       day_of_week %in% c("Saturday", "Sunday") ~ "Weekend")
     )
-
+ ```   
+``` r
 # daily_calories ---------------------------
 daily_calories <-
   daily_calories %>% 
@@ -644,10 +647,8 @@ daily_calories <-
   ) %>% 
    rename_with(
     tolower, starts_with("Id")
-  ) %>%
-
-
- mutate(
+  ) %>% 
+  mutate(
     activity_date = parse_date_time(activity_date, "%m/%d/%Y"),
     activity_date_ymd = as.Date(activity_date, "%Y/%m/%d"),
     day_of_week = weekdays(as.Date(activity_date)),
@@ -655,9 +656,8 @@ daily_calories <-
       day_of_week %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday") ~ "Weekday", 
       day_of_week %in% c("Saturday", "Sunday") ~ "Weekend")
   )
-
-
-# daily_intensities ---------------------------
+```
+``` r
 daily_intensities <-
   daily_intensities %>% 
   rename(
@@ -675,17 +675,17 @@ daily_intensities <-
     tolower, starts_with("Id")
   ) %>% 
   mutate(
-
-activity_date = parse_date_time(activity_date, "%m/%d/%Y"),
+    activity_date = parse_date_time(activity_date, "%m/%d/%Y"),
     activity_date_ymd = as.Date(activity_date, "%Y/%m/%d"),
     day_of_week = weekdays(as.Date(activity_date)),
     time_of_week = case_when(
       day_of_week %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday") ~ "Weekday", 
       day_of_week %in% c("Saturday", "Sunday") ~ "Weekend")
   )
-
-# daily_sleep ---------------------------
-daily_sleep <-
+  ```
+  ``` r
+  # daily_sleep ---------------------------
+  daily_sleep <-
   daily_sleep %>% 
   rename(
     activity_date = SleepDay,
@@ -704,8 +704,9 @@ daily_sleep <-
       day_of_week %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday") ~ "Weekday", 
       day_of_week %in% c("Saturday", "Sunday") ~ "Weekend")
     )
-    
-# daily_steps ---------------------------
+    ```
+    ``` r
+    # daily_steps ---------------------------
 daily_steps <-
   daily_steps %>% 
   rename(
@@ -723,7 +724,8 @@ daily_steps <-
       day_of_week %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday") ~ "Weekday", 
       day_of_week %in% c("Saturday", "Sunday") ~ "Weekend")
   )
-  
+   ```
+   ``` r
 # weight_log ---------------------------
 weight_log <-
   weight_log %>% 
@@ -749,7 +751,156 @@ weight_log <-
       day_of_week %in% c("Saturday", "Sunday") ~ "Weekend"),
     hour_of_day = as.POSIXct(activity_date, format = "%I:%M:%S %p")
   )
+   ```
+ **Hourly dataframes**
+ ``` r
+ #hourly_calories ---------------------------
+hourly_calories <-
+  hourly_calories %>% 
+  rename(
+    activity_hour = ActivityHour,
+    calories = Calories
+  ) %>% 
+   rename_with(
+    tolower, starts_with("Id")
+  ) %>%
+  mutate(
+    activity_hour = parse_date_time(activity_hour, "%m/%d/%Y %I:%M:%S %p"),
+    activity_date_ymd = as.Date(activity_hour, "%Y/%m/%d"), 
+    activity_time = format(activity_hour, format = "%I:%M:%S %p"),
+    day_of_week = weekdays(as.Date(activity_hour)),
+    time_of_week = case_when(
+      day_of_week %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday") ~ "Weekday", 
+      day_of_week %in% c("Saturday", "Sunday") ~ "Weekend"),
+    hour_of_day = as.POSIXct(activity_time, format = "%I:%M:%S %p")
+  )
+```
+``` r
+# hourly_intensities ---------------------------
+hourly_intensities <- 
+  hourly_intensities %>% 
+  rename(
+    activity_hour = ActivityHour,
+    total_intensity = TotalIntensity,
+    average_intensity = AverageIntensity
+  ) %>% 
+   rename_with(
+    tolower, starts_with("Id")
+  ) %>% 
+  mutate(
+    activity_hour = parse_date_time(activity_hour, "%m/%d/%Y %I:%M:%S %p"),
+    activity_date_ymd = as.Date(activity_hour, "%Y/%m/%d"), 
+    activity_time = format(activity_hour, format = "%I:%M:%S %p"),
+    day_of_week = weekdays(as.Date(activity_hour)),
+    time_of_week = case_when(
+      day_of_week %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday") ~ "Weekday", 
+      day_of_week %in% c("Saturday", "Sunday") ~ "Weekend"),
+    hour_of_day = as.POSIXct(activity_time, format = "%I:%M:%S %p")
+  )
+  ```
+``` r
+#hourly_steps --------------------------- 
+hourly_steps <- 
+  hourly_steps %>% 
+  rename(
+    activity_hour = ActivityHour,
+    step_total = StepTotal
+  ) %>% 
+   rename_with(
+    tolower, starts_with("Id")
+  ) %>% 
+  mutate(
+    activity_hour = parse_date_time(activity_hour, "%m/%d/%Y %I:%M:%S %p"),
+    activity_date_ymd = as.Date(activity_hour, "%Y/%m/%d"), 
+    activity_time = format(activity_hour, format = "%I:%M:%S %p"),
+    day_of_week = weekdays(as.Date(activity_hour)),
+    time_of_week = case_when(
+      day_of_week %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday") ~ "Weekday", 
+      day_of_week %in% c("Saturday", "Sunday") ~ "Weekend"),
+    hour_of_day = as.POSIXct(activity_time, format = "%I:%M:%S %p")
+  )
 ```
 
+**Minute dataframes**
+``` r
+# minute_sleep ---------------------------
+minute_sleep <-
+  minute_sleep %>% 
+  rename(
+    activity_date = date,
+    sleep_value = value,
+    log_id = logId
+  ) %>% 
+   rename_with(
+    tolower, starts_with("Id")
+  ) %>% 
+  mutate(
+    activity_date = parse_date_time(activity_date, "%m/%d/%Y %I:%M:%S %p"),
+    activity_date_ymd = as.Date(activity_date, "%Y/%m/%d"),
+    activity_time = format(activity_date, format = "%I:%M:00 %p"), 
+    day_of_week = weekdays(as.Date(activity_date)),
+    time_of_week = case_when(
+      day_of_week %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday") ~ "Weekday", 
+      day_of_week %in% c("Saturday", "Sunday") ~ "Weekend"),
+    hour_of_day = as.POSIXct(activity_time, format = "%I:%M:%S %p"),
+    # sleep_id will be used generate totals per sleep log
+    sleep_id = str_c(id, "-", log_id), 
+    # Create new variables for sleep values - asleep, restless, and awake
+    asleep = ifelse(sleep_value == 1, 1, 0),
+    restless = ifelse(sleep_value == 2, 1, 0),
+    awake = ifelse(sleep_value == 3, 1, 0)
+  )
+```
+``` r
+#Create sleep_summary_0 df ---------------------------
+#that shows totals for 3 sleep values per sleep log
+sleep_summary_0 <-
+  minute_sleep %>%
+  #id_date will be used to generate a daily total
+  mutate(
+    id_date = str_c(id, "-", activity_date_ymd)
+  ) %>% 
+  group_by(sleep_id, activity_date_ymd, id_date, id) %>% 
+  dplyr::summarize(
+    total_asleep = sum(sleep_value == "1"),
+    total_restless = sum(sleep_value == "2"),
+    total_awake = sum(sleep_value == "3")
+  )
+```
+``` r
+#Create sleep_summary df ---------------------------
+#that combines totals for each day per id
+sleep_summary <-
+  sleep_summary_0 %>%
+  # activity_date will be used to merge with daily_sleep df
+  mutate(
+    activity_date = parse_date_time(activity_date_ymd, "%Y/%m/%d")
+  ) %>%
+  group_by(id_date, activity_date, id) %>%
+  dplyr::summarize(
+    total_asleep_merged = sum(total_asleep),
+    total_restless_merged = sum(total_restless),
+    total_awake_merged = sum(total_awake)
+  )
+```
+``` r
+# Merge these two daily sleep dfs into one ---------------------------
+sleep_data <- merge(x = daily_sleep, y = sleep_summary, by = c("id", "activity_date"), all = TRUE)
+```
+## ANALYZE
 
+**Summary Statistics**
+After completing in-depth cleaning and formatting, we can now explore the data from a broader perspective. By generating high-level summary statistics, we aim to uncover relationships between dataframes and identify potential trends within each dataset.
 
+> A. Unique participants
+How many unique participants are there in each dataframe?
+
+**Daily dataframes
+
+``` r
+# There are 33 users (one user per unique id) in the daily activity df
+n_distinct(daily_activity$id)
+```
+``` r
+[1] 33
+```
