@@ -1419,6 +1419,7 @@ hourly_data <-
 Finally, we’ll create a weekly_data dataframe using data from daily data:
 ```r
 #Create new weekly_data_00 df  ---------------------------
+
 weekly_data_0 <-
   daily_data %>%
   select(
@@ -1433,6 +1434,7 @@ weekly_data_0 <-
       format(activity_date_ymd, "%b %Y")
       )
   )
+  
 #Summarize totals by week in new weekly_data df  ---------------------------
 weekly_data <-
   weekly_data_0 %>%
@@ -1455,4 +1457,27 @@ weekly_data <-
 
 ```
 ```r
+<div style="display: flex; justify-content: space-between;">
+
+  <div style="width: 48%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+    <h3>Tab 1 Heading</h3>
+    <p>This is the content for Tab 1.</p>
+    <ul>
+      <li>Data point 1</li>
+      <li>Data point 2</li>
+      <li>Data point 3</li>
+    </ul>
+  </div>
+
+  <div style="width: 48%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+    <h3>Tab 2 Heading</h3>
+    <p>This is the content for Tab 2.</p>
+    <ul>
+      <li>Data point A</li>
+      <li>Data point B</li>
+      <li>Data point C</li>
+    </ul>
+  </div>
+
+</div>
 ```
