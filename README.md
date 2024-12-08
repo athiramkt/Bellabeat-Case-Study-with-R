@@ -1454,30 +1454,119 @@ weekly_data <-
     weekly_light_sed_m = weekly_light_m + weekly_sedentary_m,
     weekly_calories = sum(calories)
   )
+```
+**Data cleaning [revisited]**
+Before proceeding with our analysis on the merged dataframes, let’s perform additional data cleaning:
 
+**Delete old dataframes**: Free up RAM by removing dataframes that are no longer needed for the analysis.
+
+```r
+# List all objects in current R workspace ---------------------------
+ls()
+
+ [1] "daily_activity"     "daily_calories"     "daily_data"        
+ [4] "daily_data_0"       "daily_intensities"  "daily_sleep"       
+ [7] "daily_steps"        "hourly_calories"    "hourly_data"       
+[10] "hourly_data_0"      "hourly_intensities" "hourly_steps"      
+[13] "labels_weekdays"    "limits_weekdays"    "minute_sleep"      
+[16] "sleep_data"         "sleep_summary"      "sleep_summary_0"   
+[19] "weekly_data"        "weekly_data_0"      "weight_log" 
 ```
 ```r
-<div style="display: flex; justify-content: space-between;">
+#Remove old objects ---------------------------
+#we'll no longer need or use moving forward
 
-  <div style="width: 48%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
-    <h3>Tab 1 Heading</h3>
-    <p>This is the content for Tab 1.</p>
-    <ul>
-      <li>Data point 1</li>
-      <li>Data point 2</li>
-      <li>Data point 3</li>
-    </ul>
-  </div>
+rm("daily_calories", "daily_intensities", "daily_steps", "daily_sleep", 
+   "weight_log")
+rm("hourly_calories", "hourly_intensities", "hourly_steps", "minute_sleep")
+rm("daily_data_0", "hourly_data_0", "sleep_summary_0", "weekly_data_0")
 
-  <div style="width: 48%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
-    <h3>Tab 2 Heading</h3>
-    <p>This is the content for Tab 2.</p>
-    <ul>
-      <li>Data point A</li>
-      <li>Data point B</li>
-      <li>Data point C</li>
-    </ul>
-  </div>
+#List all objects again in current R workspace  ---------------------------
+ls()
 
-</div>
+1] "daily_activity"  "daily_data"      "hourly_data"     "labels_weekdays"
+[5] "limits_weekdays" "sleep_data"      "sleep_summary"   "weekly_data"  
+```
+**Create new variables for faceting**: Add variables to ensure proper ordering for visualizations, such as days of the week or time of day.
+
+```r
+# Create day_list for ordered facet grid/wrapping  ---------------------------
+hourly_data$day_list <-
+  factor(hourly_data$day_of_week, levels = c(
+    "Monday", "Tuesday", "Wednesday", "Thursday",
+    "Friday", "Saturday", "Sunday"
+  ))
+daily_data$day_list <-
+  factor(daily_data$day_of_week, levels = c(
+    "Monday", "Tuesday", "Wednesday", "Thursday",
+    "Friday", "Saturday", "Sunday"
+  ))
+  
+#Create time_list for ordered facet grid/wrapping ---------------------------
+hourly_data$time_list <-
+  factor(hourly_data$activity_time,
+    levels = c(
+      "12:00:00 AM", "01:00:00 AM", "02:00:00 AM", "03:00:00 AM",
+      "04:00:00 AM", "05:00:00 AM", "06:00:00 AM", "07:00:00 AM",
+      "08:00:00 AM", "09:00:00 AM", "10:00:00 AM", "11:00:00 AM",
+      "12:00:00 PM", "01:00:00 PM", "02:00:00 PM", "03:00:00 PM",
+      "04:00:00 PM", "05:00:00 PM", "06:00:00 PM", "07:00:00 PM",
+      "08:00:00 PM", "09:00:00 PM", "10:00:00 PM", "11:00:00 PM"
+    )
+  )
+```
+**Mean or median?**
+Before calculating and presenting summary statistics for the data, we need to decide whether to use the mean (average) or median (middle value) as a representative measure. The choice between these two depends on whether the data contains outliers (extreme values) that could distort the mean, making it less reliable.
+
+To make this decision, we can create histograms for the data in each new dataframe. These visualizations will help us understand the distribution of the data and identify whether outliers are present. If the data is heavily skewed due to outliers, the median may be a better choice. Conversely, if the data is fairly symmetrical and without significant outliers, the mean can be used.
+
+**daily_data**
+
+```r
+#Daily histogram plot ---------------------------
+daily_hplot <- ggplot(data = daily_data)
+#Histogram plot for daily_mod_vig_m ---------------------------
+(bw <- nclass.FD(daily_data$daily_mod_vig_m)) # Optimize binwidth for each plot
+```
+```r
+[1] 24
+```
+```r
+daily_hplot +
+  geom_histogram(aes(x = daily_mod_vig_m), bins = bw) +
+  labs(
+    x = "Minutes",
+    y = "Count",
+    title = "Daily moderate/vigorous minutes",
+    caption = "Median: 21.00  ,  Mean: 34.87"
+  ) 
+```
+ ![Descriptive Alt Text](daily_h1.png)
+ 
+```r
+# Histogram plot for daily_light_sed_m ---------------------------
+(bw <- nclass.FD(daily_data$daily_light_sed_m))
+[1] 15
+
+daily_hplot +
+  geom_histogram(aes(x = daily_light_sed_m), bins = bw) +
+  labs(
+    x = "Minutes",
+    y = "Count",
+    title = "Daily light/sedentary minutes",
+    caption = "Median: 1333  ,  Mean: 1183"
+  )
+```
+ ![Descriptive Alt Text](Daily_Rplot2.png)
+```r
+```
+```r
+```
+```r
+```
+```r
+```
+```r
+```
+```r
 ```
