@@ -1415,7 +1415,44 @@ hourly_data <-
   )
 ```
 **Creating weekly_data**
+
+Finally, we’ll create a weekly_data dataframe using data from daily data:
 ```r
+#Create new weekly_data_00 df  ---------------------------
+weekly_data_0 <-
+  daily_data %>%
+  select(
+    id, activity_date_ymd, day_of_week, activity_date, total_steps, total_distance,
+    very_active_d, moderately_active_d, light_active_d,
+    sedentary_d, very_active_m, fairly_active_m,
+    lightly_active_m, sedentary_m, calories
+  ) %>%
+  mutate(
+    week_number = paste0(
+      "Week ", (as.numeric(format(activity_date_ymd, "%U"))), ", ", 
+      format(activity_date_ymd, "%b %Y")
+      )
+  )
+#Summarize totals by week in new weekly_data df  ---------------------------
+weekly_data <-
+  weekly_data_0 %>%
+  group_by(id, week_number) %>%
+  dplyr::summarize(
+    weekly_total_steps = sum(total_steps),
+    weekly_total_distance = sum(total_distance),
+    weekly_vigorous_d = sum(very_active_d),
+    weekly_moderate_d = sum(moderately_active_d),
+    weekly_light_d = sum(light_active_d),
+    weekly_sedentary_d = sum(sedentary_d),
+    weekly_vigorous_m = sum(very_active_m),
+    weekly_moderate_m = sum(fairly_active_m),
+    weekly_mod_vig_m = weekly_vigorous_m + weekly_moderate_m,
+    weekly_light_m = sum(lightly_active_m),
+    weekly_sedentary_m = sum(sedentary_m),
+    weekly_light_sed_m = weekly_light_m + weekly_sedentary_m,
+    weekly_calories = sum(calories)
+  )
+
 ```
 ```r
 ```
