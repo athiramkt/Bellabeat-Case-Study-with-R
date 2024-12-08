@@ -1129,4 +1129,72 @@ ggplot(data = daily_activity, aes(x = total_steps, y = calories)) +
 ![Descriptive Alt Text](Rplot1.png)
   
 ``` r
+cor.test(daily_activity$total_steps, daily_activity$calories, method = "pearson")
+```
+``` r
+Pearson's product-moment correlation
+
+data:  daily_activity$total_steps and daily_activity$calories
+t = 22.472, df = 938, p-value < 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.5483688 0.6316184
+sample estimates:
+      cor 
+0.5915681 
+```
+As anticipated, there is a positive correlation between total steps and calories burned, which aligns with the idea that increased activity leads to higher calorie expenditure. 
+
+However, how does this relationship change when considering very active minutes and calories burned?
+
+``` r
+#Very active minutes vs calories plot ---------------------------
+ggplot(data = daily_activity, aes(x = very_active_m, y = calories)) +
+  geom_point() +
+  geom_smooth() + # Trend line with a shadow representing  95% confidence interval
+  labs(title = "Very active minutes vs calories") +
+  ylab("Calories") +
+  xlab("Very active minutes") +
+  theme_minimal()
+```
+![Descriptive Alt Text](Rplot2.png)
+
+``` r
+cor.test(daily_activity$very_active_m, daily_activity$calories, method = "pearson")
+```
+``` r
+	Pearson's product-moment correlation
+
+data:  daily_activity$very_active_m and daily_activity$calories
+t = 23.939, df = 938, p-value < 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.5745197 0.6540260
+sample estimates:
+      cor 
+0.6158383 
+```
+
+The relationship between lightly active minutes and calories burned remains positive but is notably weaker. This suggests that lightly active minutes may have a smaller impact on total calorie expenditure throughout the day.
+
+``` r
+#Lightly active minutes vs calories plot   ---------------------------
+ggplot(data = daily_activity, aes(x = lightly_active_m, y = calories)) +
+  geom_point() +
+  geom_smooth() + # Trend line with a shadow representing  95% confidence interval
+  labs(title = "Lightly active minutes vs calories") +
+  ylab("Calories") +
+  xlab("Lightly active minutes") +
+  theme_minimal()
+```
+![Descriptive Alt Text](Rplot3.png)
+``` r
+```
+``` r
+```
+``` r
+```
+``` r
+```
+``` r
 ```
