@@ -1615,11 +1615,93 @@ Removed 530 rows containing non-finite outside the scale range
 ![Descriptive Alt Text](daily_minutes_asleep.png)
 
 ```r
-# Remove bindwith object ---------------------------
+#Remove bindwith object ---------------------------
 rm(bw)
 ```
 **Overall Findings**: Given that outliers significantly impact the mean for each variable, it is more appropriate to use the **median** when calculating the daily summary statistics for moderate/vigorous activity minutes, light/sedentary activity minutes, and total daily steps. However, we can still use mean for the sleep variables and calories.
 
+** New Summary stats** [Weekly data]: Let’s look at the quick summary statistics on a weekly level.
+
+```r
+#Weekly data for original active minute totals ---------------------------
+#vigorous, moderate, light and sedentary
+weekly_data %>%
+  ungroup() %>%
+  select(
+    weekly_vigorous_m,
+    weekly_moderate_m,
+    weekly_light_m,
+    weekly_sedentary_m
+  ) %>%
+  summary()
+```
+```r
+weekly_vigorous_m weekly_moderate_m weekly_light_m weekly_sedentary_m
+ Min.   :  0.0     Min.   :  0.00    Min.   :   0   Min.   :  642     
+ 1st Qu.:  8.0     1st Qu.: 17.00    1st Qu.: 802   1st Qu.: 4778     
+ Median : 68.5     Median : 65.50    Median :1188   Median : 5754     
+ Mean   :130.1     Mean   : 83.45    Mean   :1182   Mean   : 6064     
+ 3rd Qu.:182.5     3rd Qu.:122.00    3rd Qu.:1554   3rd Qu.: 7749     
+ Max.   :775.0     Max.   :549.00    Max.   :2590   Max.   :10080  
+```
+```r
+#Weekly data for new combo active minute totals ---------------------------
+#moderate/vigorous and light/sedentary
+weekly_data %>%
+  ungroup() %>%
+  select(
+    weekly_mod_vig_m,
+    weekly_light_sed_m
+  ) %>%
+  summary()
+```
+```r
+ weekly_mod_vig_m  weekly_light_sed_m
+ Min.   :   0.00   Min.   : 1014     
+ 1st Qu.:  36.25   1st Qu.: 6029     
+ Median : 182.00   Median : 6956     
+ Mean   : 213.51   Mean   : 7246     
+ 3rd Qu.: 303.00   3rd Qu.: 9543     
+ Max.   :1058.00   Max.   :10080 
+```
+```r
+# Weekly data for total steps and calories ---------------------------
+weekly_data %>%
+  ungroup() %>%
+  select(
+    weekly_total_steps,
+    weekly_calories
+  ) %>%
+  summary()
+```
+```r
+ weekly_total_steps weekly_calories
+ Min.   :     0     Min.   : 1237  
+ 1st Qu.: 30671     1st Qu.:10607  
+ Median : 44903     Median :13615  
+ Mean   : 46857     Mean   :14130  
+ 3rd Qu.: 63219     3rd Qu.:17529  
+ Max.   :116758     Max.   :26101
+```
+**Key Insights from Weekly Activity Data**
+
+This analysis provides several noteworthy insights into the weekly activity patterns of the sample group:
+
+> 1. **46,857 steps per week**: The average total weekly steps fall significantly below the recommended 70,000 steps (equivalent to 10,000 steps per day). This highlights a gap in meeting daily physical activity goals.
+
+> 2. **6,064 sedentary minutes per week**: Sedentary behavior dominates the tracked activities, with participants being sedentary for over 4.2 days each week on average. This indicates a largely inactive lifestyle.
+
+> 3. **1,182 light-intensity minutes per week**: Among non-sedentary activities, light-intensity activities account for the highest average weekly minutes, suggesting a preference for low-impact movement.
+
+> 4. **182 minutes of combined moderate and vigorous activity**: The median weekly total for moderate-to-vigorous physical activity surpasses the recommended 150 minutes per week, which is a positive sign.
+
+> 5. **65.5 minutes of moderate activity and 68.5 minutes of vigorous activity**: Interestingly, the median time spent in vigorous-intensity activities exceeds that of moderate-intensity activities, which is unusual and suggests a preference for high-intensity workouts in this sample.
+
+> 6. **91.5% sleep efficiency**: On average, participants spend 91.5% of their time in bed asleep, demonstrating good sleep quality.
+
+> 7. **83 calories burned per hour**: The median hourly calorie burn provides an additional measure of energy expenditure during daily activities.
+
+These insights show a mix of encouraging activity trends, like meeting moderate-to-vigorous activity recommendations and high sleep efficiency, along with areas for improvement, such as reducing sedentary time and increasing overall step counts.
 ```r
 ```
 ```r
