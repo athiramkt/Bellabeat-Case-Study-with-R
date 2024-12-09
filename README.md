@@ -1608,11 +1608,11 @@ daily_hplot +
     caption = "Median: 433.0  ,  Mean: 419.5"
   )
   
-**Warning message**:
+Warning message:
 Removed 530 rows containing non-finite outside the scale range
 (`stat_bin()`).
 ```
-![Descriptive Alt Text](daily total calories.png)
+![Descriptive Alt Text](daily minutes asleep.png)
 
 ```r
 # Remove bindwith object ---------------------------
