@@ -1595,7 +1595,7 @@ daily_hplot +
     caption = "Median: 2140  ,  Mean: 2308"
   )
 ```
-![Descriptive Alt Text](daily total calories.png)
+![Descriptive Alt Text](daily_total_calories.png)
 
 ```r
 #Histogram plot for total_minutes_asleep ---------------------------
@@ -1612,7 +1612,7 @@ Warning message:
 Removed 530 rows containing non-finite outside the scale range
 (`stat_bin()`).
 ```
-![Descriptive Alt Text](daily minutes asleep.png)
+![Descriptive Alt Text](daily_minutes_asleep.png)
 
 ```r
 # Remove bindwith object ---------------------------
