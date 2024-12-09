@@ -1683,7 +1683,7 @@ weekly_data %>%
  3rd Qu.: 63219     3rd Qu.:17529  
  Max.   :116758     Max.   :26101
 ```
-**Key Insights from Weekly Activity Data**
+**Key Insights from Weekly Activity Data:**
 
 This analysis provides several noteworthy insights into the weekly activity patterns of the sample group:
 
@@ -1702,6 +1702,71 @@ This analysis provides several noteworthy insights into the weekly activity patt
 > 7. **83 calories burned per hour**: The median hourly calorie burn provides an additional measure of energy expenditure during daily activities.
 
 These insights show a mix of encouraging activity trends, like meeting moderate-to-vigorous activity recommendations and high sleep efficiency, along with areas for improvement, such as reducing sedentary time and increasing overall step counts.
+
+**Average intensity vs time**
+
+What is the relationship between time of day and average activity intensity? For instance, are people generally more active or engage in higher-intensity activities in the morning compared to the evening?
+
+```r
+install.packages("ggthemes")
+library(ggthemes)
+#Average intensity throughout the day ---------------------------
+average_intensity_p <- 
+  ggplot(
+    data = hourly_data, 
+    aes(x = time_list, y = average_intensity, color = average_intensity)
+         )
+average_intensity_p +
+  geom_jitter(width = 0.3, size = 0.2) +
+  labs(
+    x = "Hour", 
+    y = "Average intensity",
+    color = "Average Intensity",
+    title = "Average intensity throughout the day"
+  ) + 
+  stat_summary(
+    aes(x = time_list, y = average_intensity),
+    fun = mean, 
+    geom = "point", 
+    color = "white", 
+    size = 1,
+    alpha = 0.7
+    ) +
+  scale_color_viridis_c() +
+  theme_solarized(light = FALSE) +
+  theme(
+    axis.title.x = element_text(
+      margin = margin(5, 0, 5, 0),
+      size = 12
+    ),
+    axis.title.y = element_text(
+      margin = margin(0, 5, 0, 5),
+      size = 12
+    ),
+    plot.title = element_text(
+      margin = margin(10, 0, 10, 0),
+      size = 14
+    ),
+    axis.text.x = element_text(
+      angle = 45,
+      vjust = 1,
+      hjust = 1,
+      size = 8
+    )
+  )
+```
+![Descriptive Alt Text](Average_intensity.png)
+
+**Active Minutes: A Key Health Metric**
+
+Among all the metrics we've analyzed so far, active minutes stands out as the primary focus for our next steps. This section will delve into visualizations and key findings related to active minutes. Based on these insights, we'll present high-level content recommendations tailored for our stakeholders.
+Trends in Active Minutes
+
+Health experts recommend that adults engage in 150 to 300 minutes of moderate to vigorous aerobic activity per week (see: Every Move Counts Towards Better Health – WHO). From the previous analysis, the median weekly total of moderate/vigorous minutes for this participant group is 182 minutes, which meets the minimum recommended guideline.
+
+However, how many participants are consistently meeting this benchmark? What strategies can we implement to encourage more participants to reach or exceed this goal?
+
+To answer these questions, we’ll analyze the weekly activity totals for all 154 participants, starting with their weekly moderate activity (weekly_moderate_m) totals. Let's dive deeper into these trends.
 ```r
 ```
 ```r
