@@ -924,7 +924,7 @@ n_distinct(weight_log$Id)
 ``` r
 [1] 8
 ```
-**Hourly dataframes
+**Hourly dataframes**
 ``` r
 # There are 33 users (one user per unique id) in the hourly dfs
 n_distinct(hourly_calories$id)
@@ -936,7 +936,7 @@ n_distinct(hourly_intensities$id)
 n_distinct(hourly_intensities$id)
 [1] 33
 ```
-**Minute dataframe
+**Minute dataframe**
 ``` r
 # There are 24 users (one user per unique id) in the minute df
 n_distinct(minute_sleep$id)
@@ -964,7 +964,7 @@ nrow(weight_log)
 ```
 **Hourly dataframes**
 ``` r
-# There are 22099 observations in each hourly dataframe
+#There are 22099 observations in each hourly dataframe
 nrow(hourly_calories)
 [1] 22099
 
@@ -977,7 +977,7 @@ nrow(hourly_steps)
 **Minute dataframe**
 
 ``` r
-# There are 188521 observations in the minute dataframe
+#There are 188521 observations in the minute dataframe
 nrow(minute_sleep)
 [1] 188521
 ```
@@ -986,6 +986,7 @@ nrow(minute_sleep)
 What are some quick summary statistics we’d want to know about each dataframe?
 
 ** Daily dataframes**
+
 ``` r
 #Daily totals for steps, distance, calories ---------------------------
 daily_activity %>%
@@ -1117,7 +1118,7 @@ The widely promoted goal of 10,000 steps per day is a common benchmark in the sm
 For instance, what is the relationship between total steps and calories burned? Let's explore this connection through visualizations.
 
 ``` r
-# Total steps vs calories plot ---------------------------
+#Total steps vs calories plot ---------------------------
 ggplot(data = daily_activity, aes(x = total_steps, y = calories)) +
   geom_point() +
   geom_smooth() + # Trend line with a shadow representing  95% confidence interval
@@ -1188,6 +1189,7 @@ ggplot(data = daily_activity, aes(x = lightly_active_m, y = calories)) +
   theme_minimal()
 ```
 ![Descriptive Alt Text](Rplot3.png)
+
 ``` r
 cor.test(daily_activity$lightly_active_m, daily_activity$calories, method = "pearson")
 ```
@@ -1323,7 +1325,7 @@ ggplot(data = sleep_data) +
 ![Descriptive Alt Text](Rplot6.png)
 
  ``` r
-# Total minutes awake vs time of week ---------------------------
+#Total minutes awake vs time of week ---------------------------
 ggplot(data = sleep_data) +
   geom_point(
     aes(
@@ -1490,7 +1492,7 @@ ls()
 **Create new variables for faceting**: Add variables to ensure proper ordering for visualizations, such as days of the week or time of day.
 
 ```r
-# Create day_list for ordered facet grid/wrapping  ---------------------------
+#Create day_list for ordered facet grid/wrapping  ---------------------------
 hourly_data$day_list <-
   factor(hourly_data$day_of_week, levels = c(
     "Monday", "Tuesday", "Wednesday", "Thursday",
@@ -1558,14 +1560,66 @@ daily_hplot +
   )
 ```
  ![Descriptive Alt Text](Daily_Rplot2.png)
+ 
 ```r
+# Histogram plot for total_steps ---------------------------
+(bw <- nclass.FD(daily_data$total_steps))
+
+[1] 26
 ```
 ```r
+daily_hplot +
+  geom_histogram(aes(x = total_steps), bins = bw) +
+  labs(
+    x = "Total Steps",
+    y = "Count",
+    title = "Daily total steps",
+    caption = "Median: 7439  ,  Mean: 7652"
+  )
+```
+![Descriptive Alt Text](hplot3.png)
+
+```r
+#Histogram plot for calories ---------------------------
+(bw <- nclass.FD(daily_data$calories))
+
+[1] 25
 ```
 ```r
+daily_hplot +
+  geom_histogram(aes(x = calories), bins = bw) +
+  labs(
+    x = "Calories",
+    y = "Count",
+    title = "Daily total calories",
+    caption = "Median: 2140  ,  Mean: 2308"
+  )
 ```
+![Descriptive Alt Text](daily total calories.png)
+
 ```r
+#Histogram plot for total_minutes_asleep ---------------------------
+daily_hplot +
+  geom_histogram(aes(x = total_minutes_asleep)) +
+  labs(
+    x = "Total Minutes Asleep",
+    y = "Count",
+    title = "Daily minutes asleep",
+    caption = "Median: 433.0  ,  Mean: 419.5"
+  )
+  
+**Warning message**:
+Removed 530 rows containing non-finite outside the scale range
+(`stat_bin()`).
 ```
+![Descriptive Alt Text](daily total calories.png)
+
+```r
+# Remove bindwith object ---------------------------
+rm(bw)
+```
+**Overall Findings**: Given that outliers significantly impact the mean for each variable, it is more appropriate to use the **median** when calculating the daily summary statistics for moderate/vigorous activity minutes, light/sedentary activity minutes, and total daily steps. However, we can still use mean for the sleep variables and calories.
+
 ```r
 ```
 ```r
