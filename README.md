@@ -1757,17 +1757,455 @@ average_intensity_p +
 ```
 ![Descriptive Alt Text](Average_intensity.png)
 
+As you might expect, the average intensity begins to rise around 5:00 AM and stays relatively high throughout the workday before lowering around 8:00 PM. This is evident by looking at the mean for each hour, which is represented by the white dots in each column. The peak times look to be the same as what we saw earlier for observation counts:
+
+    12:00 - 2:00 PM (12:00 - 14:00)
+    5:00 - 7:00 PM (17:00 - 19:00)
+
+
 **Active Minutes: A Key Health Metric**
 
 Among all the metrics we've analyzed so far, active minutes stands out as the primary focus for our next steps. This section will delve into visualizations and key findings related to active minutes. Based on these insights, we'll present high-level content recommendations tailored for our stakeholders.
 Trends in Active Minutes
 
-Health experts recommend that adults engage in 150 to 300 minutes of moderate to vigorous aerobic activity per week (see: Every Move Counts Towards Better Health – WHO). From the previous analysis, the median weekly total of moderate/vigorous minutes for this participant group is 182 minutes, which meets the minimum recommended guideline.
+Health experts recommend that adults engage in 150 to 300 minutes of moderate to vigorous aerobic activity per week ([see: Every Move Counts Towards Better Health – WHO](https://www.who.int/news/item/25-11-2020-every-move-counts-towards-better-health-says-who)). 
+
+From the previous analysis, the median weekly total of moderate/vigorous minutes for this participant group is 182 minutes, which meets the minimum recommended guideline.
 
 However, how many participants are consistently meeting this benchmark? What strategies can we implement to encourage more participants to reach or exceed this goal?
 
 To answer these questions, we’ll analyze the weekly activity totals for all 154 participants, starting with their weekly moderate activity (weekly_moderate_m) totals. Let's dive deeper into these trends.
+
 ```r
+install.packages("gridExtra")
+library(gridExtra)
+
+#Create labels for week-month-year ---------------------------
+labels_wmy <- c(
+  "Week 15\nApr-16", "Week 16\nApr-16", "Week 17\nApr-16", "Week 18\nMay-16",
+  "Week 19\nMay-16"
+)
+#create df to use in next plot ---------------------------
+weekly_moderate_150_300 <- as.data.frame(
+  weekly_data %>%
+    group_by(
+      weekly_moderate_m < 150,
+      (weekly_moderate_m >= 150 & weekly_moderate_m < 300),
+      weekly_moderate_m >= 300
+    ) %>%
+    tally()
+)
+weekly_moderate_150_300_table <- 
+  cbind(c("300+ ", "150 - 300 ", "0 - 150 "), weekly_moderate_150_300[, 4])
+# Create weekly_moderate_p ---------------------------
+weekly_moderate_p <- 
+  ggplot(weekly_data, aes(x = week_number, y = weekly_moderate_m))
+# Add layers to weekly_moderate_p ---------------------------
+weekly_moderate_p +
+  geom_point(
+    data = weekly_data[which(weekly_data$weekly_moderate_m >= 300), ],
+    aes(color = "300+ "), 
+    size = 2, 
+    position = position_jitter(width = .25, height = 0), 
+    alpha = 0.5
+  ) +
+  geom_point(
+    data = weekly_data[which(weekly_data$weekly_moderate_m >= 150 & weekly_data$weekly_moderate_m < 300), ],
+    aes(color = "150 - 300 "), 
+    size = 2, 
+    position = position_jitter(width = .25, height = 0), 
+    alpha = 0.5
+  ) +
+  geom_point(
+    data = weekly_data[which(weekly_data$weekly_moderate_m < 150), ],
+    aes(color = "0 - 150 "), 
+    size = 2, 
+    position = position_jitter(width = .25, height = 0), 
+    alpha = 0.5
+  ) +
+  scale_x_discrete(name = NULL, labels = labels_wmy) +
+  scale_y_continuous(
+    breaks = c(0, 150, 300, 450, 600, 750, 900, 1050), 
+    limits = c(0, 1060)) +
+  scale_color_manual(
+    name = "Minutes",
+    labels = c("300+ ", "150 - 300 ", "0 - 150 "),
+    values = c(
+      "300+ " = "#225ea8",
+      "150 - 300 " = "#41b6c4",
+      "0 - 150 " = "#707070"
+    )
+  ) +
+  labs(
+    title = "Moderate activity",
+    subtitle = "(minutes per week)"
+  ) +
+  geom_hline(yintercept = 150, linetype = "dashed") +
+  geom_hline(yintercept = 300, linetype = "dashed") +
+  ylab("Activity minutes") +
+  theme_classic() +
+  theme(
+    plot.subtitle = element_text(
+      margin = margin(1, 5, 5, 0),
+      size = 10,
+      hjust = 1,
+      face = "italic"
+    ),
+    axis.title.y = element_text(
+      margin = margin(0, 5, 0, 5),
+      size = 12
+    ),
+    plot.title = element_text(
+      margin = margin(5, 5, 5, 0),
+      size = 14,
+      hjust = 1,
+      face = "bold"
+    ),
+    legend.position = "bottom"
+  ) +
+  guides(color = guide_legend(override.aes = list(size = 3))) +
+  #Add summary table to weekly_moderate_p ---------------------------
+  coord_cartesian(clip = "off") +
+  theme(
+    plot.margin = margin(1, 25, 1, 1)
+  ) +
+  annotation_custom(
+    grob = tableGrob(weekly_moderate_150_300_table, theme = ttheme_minimal(
+      base_size = 9,
+      base_color = "black",
+      base_family = "",
+      parse = FALSE,
+      padding = unit(c(4, 4), "mm"),
+      core = list(
+        bg_params = list(fill = c("#225ea8", "#41b6c4", "#707070"), 
+                         alpha = .3, 
+                         col = NA),
+        fg_params = list(hjust = 0, x = 0.15, fontface = c(rep("plain", 3))),
+        colhead = list(fg_params = list(hjust = 0, x = 0.15))
+      ),
+      vp = NULL
+    )),
+    xmin = 4.5, xmax = 6, ymin = 600, ymax = 1050
+  )
 ```
+![Descriptive Alt Text](Moderate_activity.png)
+
+Now let’s look at weekly_vigorous_m totals:
+
 ```r
+#Create df to use in next plot  ---------------------------
+weekly_vigorous_75_150 <- 
+  as.data.frame(
+    weekly_data %>%
+      group_by(
+        weekly_vigorous_m < 75,
+        (weekly_vigorous_m >= 75 & weekly_vigorous_m < 150),
+        weekly_vigorous_m >= 150
+        ) %>%
+      tally()
+    )
+weekly_vigorous_75_150_table <- 
+  cbind(c("150+ ", "75 - 150 ", "0 - 75 "), weekly_vigorous_75_150[, 4])
+# Create weekly_vigorous_p ---------------------------
+weekly_vigorous_p <- 
+  ggplot(weekly_data, aes(x = week_number, y = weekly_vigorous_m))
+# Add layers to weekly_vigorous_p ---------------------------
+weekly_vigorous_p +
+  geom_point(
+    data = weekly_data[which(weekly_data$weekly_vigorous_m >= 150), ],
+    aes(color = "150+ "), 
+    size = 2, 
+    position = position_jitter(width = .25, height = 0), 
+    alpha = 0.4
+  ) +
+  geom_point(
+    data = weekly_data[which(weekly_data$weekly_vigorous_m >= 75 & weekly_data$weekly_vigorous_m < 150), ],
+    aes(color = "75 - 150 "), 
+    size = 2, 
+    position = position_jitter(width = .25, height = 0), 
+    alpha = 0.4
+  ) +
+  geom_point(
+    data = weekly_data[which(weekly_data$weekly_vigorous_m < 75), ],
+    aes(color = "0 - 75 "), 
+    size = 2, 
+    position = position_jitter(width = .25, height = 0), 
+    alpha = 0.4
+  ) +
+  scale_x_discrete(name = NULL, labels = labels_wmy) +
+  scale_y_continuous(breaks = c(0, 75, 150, 300, 450, 600, 750, 900, 1050), 
+                     limits = c(0, 1060)) +
+  scale_color_manual(
+    name = "Minutes",
+    labels = c("150+ ", "75 - 150 ", "0 - 75 "),
+    values = c(
+      "150+ " = "#225ea8",
+      "75 - 150 " = "#41b6c4",
+      "0 - 75 " = "#707070"
+    )
+  ) +
+  labs(
+    title = "Vigorous activity",
+    subtitle = "(minutes per week)"
+  ) +
+  geom_hline(yintercept = 75, linetype = "dashed") +
+  geom_hline(yintercept = 150, linetype = "dashed") +
+  ylab("Activity minutes") +
+  theme_classic() +
+  theme(
+    plot.subtitle = element_text(
+      margin = margin(1, 5, 5, 0),
+      size = 10,
+      hjust = 1,
+      face = "italic"
+    ),
+    axis.title.y = element_text(
+      margin = margin(0, 5, 0, 5),
+      size = 12
+    ),
+    plot.title = element_text(
+      margin = margin(5, 5, 5, 0),
+      size = 14,
+      hjust = 1,
+      face = "bold"
+    ),
+    legend.position = "bottom"
+  ) +
+  guides(color = guide_legend(override.aes = list(size = 3))) +
+  #Add summary table to weekly_vigorous_p ---------------------------
+  coord_cartesian(clip = "off") +
+  theme(
+    plot.margin = margin(1, 25, 1, 1)
+  ) +
+  annotation_custom(
+    grob = tableGrob(
+      weekly_vigorous_75_150_table, 
+      theme = ttheme_minimal(
+        base_size = 9,
+        base_color = "black",
+        base_family = "",
+        parse = FALSE,
+        padding = unit(c(4, 4), "mm"),
+        core = list(
+          bg_params = list(
+            fill = c("#225ea8", "#41b6c4", "#707070"), 
+            alpha = .3, 
+            col = NA),
+        fg_params = list(hjust = 0, x = 0.15, fontface = c(rep("plain", 3))),
+        colhead = list(fg_params = list(hjust = 0, x = 0.15))
+        ),
+        vp = NULL
+        )
+      ),
+    xmin = 4.5, 
+    xmax = 6, 
+    ymin = 600, 
+    ymax = 1050
+    )
 ```
+Although the graphs for moderate minutes and vigorous minutes are insightful, combining these metrics provides a clearer perspective when evaluating the 150 to 300-minute weekly goal for moderate to vigorous physical activity:
+
+```r
+#Create df to use in next plot ---------------------------
+weekly_moderate_vigorous_150_300 <- 
+  as.data.frame(
+    weekly_data %>%
+      group_by(
+        weekly_mod_vig_m < 150, 
+        (weekly_mod_vig_m >= 150 & weekly_mod_vig_m < 300), 
+        weekly_mod_vig_m >= 300
+    ) %>%
+    tally()
+)
+weekly_moderate_vigorous_150_300_table <- 
+  cbind(c("300+ ", "150 - 300 ", "0 - 150 "), weekly_moderate_vigorous_150_300[, 4])
+# Create weekly_moderate_vigorous_p ---------------------------
+weekly_moderate_vigorous_p <- 
+  ggplot(weekly_data, aes(x = week_number, y = weekly_mod_vig_m))
+# Add layers to weekly_moderate_vigorous_p ---------------------------
+weekly_moderate_vigorous_p +
+  geom_point(
+    data = weekly_data[which(weekly_data$weekly_mod_vig_m >= 300), ],
+    aes(color = "300+ "), 
+    size = 2, 
+    position = position_jitter(width = .25, height = 0), 
+    alpha = 0.5
+  ) +
+  geom_point(
+    data = weekly_data[which(weekly_data$weekly_mod_vig_m >= 150 & weekly_data$weekly_mod_vig_m < 300), ],
+    aes(color = "150 - 300 "), 
+    size = 2, 
+    position = position_jitter(width = .25, height = 0), 
+    alpha = 0.5
+  ) +
+  geom_point(
+    data = weekly_data[which(weekly_data$weekly_mod_vig_m < 150), ],
+    aes(color = "0 - 150 "), 
+    size = 2, 
+    position = position_jitter(width = .25, height = 0), 
+    alpha = 0.5
+  ) +
+  scale_x_discrete(name = NULL, labels = labels_wmy) +
+  scale_y_continuous(breaks = c(0, 150, 300, 450, 600, 750, 900, 1050), limits = c(0, 1060)) +
+  scale_color_manual(
+    name = "Minutes",
+    labels = c("300+ ", "150 - 300 ", "0 - 150 "),
+    values = c(
+      "300+ " = "#225ea8",
+      "150 - 300 " = "#41b6c4",
+      "0 - 150 " = "#707070"
+    )
+  ) +
+  labs(
+    title = "Combined moderate/vigorous activity",
+    subtitle = "(minutes per week)"
+  ) +
+  geom_hline(yintercept = 150, linetype = "dashed") +
+  geom_hline(yintercept = 300, linetype = "dashed") +
+  ylab("Activity minutes") +
+  theme_classic() +
+  theme(
+    plot.subtitle = element_text(
+      margin = margin(1, 5, 5, 0),
+      size = 10,
+      hjust = 1,
+      face = "italic"
+    ),
+    axis.title.y = element_text(
+      margin = margin(0, 5, 0, 5),
+      size = 12
+    ),
+    plot.title = element_text(
+      margin = margin(5, 5, 5, 0),
+      size = 14,
+      hjust = 1,
+      face = "bold"
+    ),
+    legend.position = "bottom"
+  ) +
+  guides(color = guide_legend(override.aes = list(size = 3))) +
+  # Add summary table to weekly_moderate_vigorous_p ---------------------------
+  coord_cartesian(clip = "off") +
+  theme(
+    plot.margin = margin(1, 25, 1, 1)
+  ) +
+  annotation_custom(
+    grob = tableGrob(
+      weekly_moderate_vigorous_150_300_table, 
+      theme = ttheme_minimal(
+        base_size = 9,
+        base_color = "black",
+        base_family = "",
+        parse = FALSE,
+        padding = unit(c(4, 4), "mm"),
+        core = list(
+          bg_params = list(
+            fill = c("#225ea8", "#41b6c4", "#707070"), 
+            alpha = .3, 
+            col = NA),
+          fg_params = list(hjust = 0, 
+                           x = 0.15, 
+                           fontface = c(rep("plain", 3))),
+          colhead = list(fg_params = list(hjust = 0, x = 0.15))
+          ),
+        vp = NULL
+        )
+      ),
+    xmin = 4.5, 
+    xmax = 6, 
+    ymin = 600, 
+    ymax = 1050
+  )
+```
+![Descriptive Alt Text](Combined_moderate_vigorous.png)
+
+```r
+ggsave(filename = "Moderate_vigorous_activity_per_week_color.png", path = "images")
+# Create basic graph showing 154 totals in grey ---------------------------
+weekly_moderate_vigorous_p <- 
+  ggplot(weekly_data, aes(x = week_number, y = weekly_mod_vig_m))
+# Add layers ---------------------------
+weekly_moderate_vigorous_p +
+  geom_point(
+    data = weekly_data[which(weekly_data$weekly_mod_vig_m >= 300), ],
+    aes(color = "300+ "), 
+    size = 2, 
+    position = position_jitter(width = .25, height = 0), 
+    alpha = 0.5
+    ) +
+  geom_point(
+    data = weekly_data[which(weekly_data$weekly_mod_vig_m >= 150 & weekly_data$weekly_mod_vig_m < 300), ],
+    aes(color = "150 - 300 "), 
+    size = 2, 
+    position = position_jitter(width = .25, height = 0), 
+    alpha = 0.5
+  ) +
+  geom_point(
+    data = weekly_data[which(weekly_data$weekly_mod_vig_m < 150), ],
+    aes(color = "0 - 150 "), 
+    size = 2, 
+    position = position_jitter(width = .25, height = 0), 
+    alpha = 0.5
+  ) +
+  scale_x_discrete(name = NULL, labels = labels_wmy) +
+  scale_y_continuous(breaks = c(0, 150, 300, 450, 600, 750, 900, 1050), 
+                     limits = c(0, 1060)) +
+  scale_color_manual(
+    name = "Minutes",
+    labels = c("300+ ", "150 - 300 ", "0 - 150 "),
+    values = c(
+      "300+ " = "#707070",
+      "150 - 300 " = "#707070",
+      "0 - 150 " = "#707070"
+    )
+  ) +
+  labs(
+    title = "Combined moderate/vigorous activity",
+    subtitle = "(minutes per week)"
+  ) +
+  ylab("Activity minutes") +
+  theme_classic() +
+  theme(
+    plot.subtitle = element_text(
+      margin = margin(1, 5, 5, 0),
+      size = 10,
+      hjust = 1,
+      face = "italic"
+    ),
+    axis.title.y = element_text(
+      margin = margin(0, 5, 0, 5),
+      size = 12
+    ),
+    plot.title = element_text(
+      margin = margin(5, 5, 5, 0),
+      size = 14,
+      hjust = 1,
+      face = "bold"
+    ),
+    legend.position = "none"
+  ) +
+  guides(color = guide_legend(override.aes = list(size = 3)))
+```
+![Descriptive Alt Text](Rplot_C moderate_vigorous_grey.png)
+
+```r
+Here are some notable findings:
+
+> 1. 45% of weekly moderate/vigorous intensity active minutes fall below 150 minutes:0–150 minutes = 45% (70/154)
+
+>2.29% of weekly moderate/vigorous intensity active minutes fall between 150 and 300 minutes:150–300 minutes = 29% (44/154)
+
+> 3.26% of weekly moderate/vigorous intensity active minutes exceed 300 minutes:300+ minutes = 26% (40/154)
+
+This shows that the largest proportion (45%) of the 154 weekly activity totals fall short of the 150-minute minimum. This trend in physical activity among smart device users offers valuable insights.
+
+## ASK
+
+In the final step of the data analysis process, we will provide recommendations to increase the number of customers on the Bellabeat App. But before that, we'll present the key insights.
+
+**Key Finding**:
+
+> 1. Insufficient physical activity: Despite using smart devices, many individuals remain physically inactive. Increasing active minutes would benefit all Bellabeat users.
+      > **Potential Reason**: Has COVID-19 exacerbated the adverse health effects of physical inactivity among women? (e.g., due to work-from-home arrangements, lockdowns, or mental health challenges).
+      > **Action Plan**: Identify nuanced communication strategies to effectively convey crucial health information about physical activity, including the increased risks of infectious diseases like COVID-19 and non-communicable diseases (NCDs).
+     
