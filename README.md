@@ -2186,18 +2186,19 @@ weekly_moderate_vigorous_p +
   ) +
   guides(color = guide_legend(override.aes = list(size = 3)))
 ```
-![Descriptive Alt Text](Rplot_C moderate_vigorous_grey.png)
+![Descriptive Alt Text](Rplot_C Rplot_Combined moderate_vigorous_grey.png)
 
 ```r
 Here are some notable findings:
 
 > 1. 45% of weekly moderate/vigorous intensity active minutes fall below 150 minutes:0–150 minutes = 45% (70/154)
 
->2.29% of weekly moderate/vigorous intensity active minutes fall between 150 and 300 minutes:150–300 minutes = 29% (44/154)
+>2. 29% of weekly moderate/vigorous intensity active minutes fall between 150 and 300 minutes:150–300 minutes = 29% (44/154)
 
-> 3.26% of weekly moderate/vigorous intensity active minutes exceed 300 minutes:300+ minutes = 26% (40/154)
+> 3. 26% of weekly moderate/vigorous intensity active minutes exceed 300 minutes:300+ minutes = 26% (40/154)
 
 This shows that the largest proportion (45%) of the 154 weekly activity totals fall short of the 150-minute minimum. This trend in physical activity among smart device users offers valuable insights.
+```
 
 ## ASK
 
@@ -2205,7 +2206,19 @@ In the final step of the data analysis process, we will provide recommendations 
 
 **Key Finding**:
 
-> 1. Insufficient physical activity: Despite using smart devices, many individuals remain physically inactive. Increasing active minutes would benefit all Bellabeat users.
+> Insufficient physical activity: Despite using smart devices, many individuals remain physically inactive. Increasing active minutes would benefit all Bellabeat users.
+
       > **Potential Reason**: Has COVID-19 exacerbated the adverse health effects of physical inactivity among women? (e.g., due to work-from-home arrangements, lockdowns, or mental health challenges).
+      
       > **Action Plan**: Identify nuanced communication strategies to effectively convey crucial health information about physical activity, including the increased risks of infectious diseases like COVID-19 and non-communicable diseases (NCDs).
+
+**Strategies**
+
+**Active Minutes and the Bellabeat App: Crafting Our Marketing Strategy**
+
+> 1. **Highlight the Importance of Physical Activity and Bellabeat's Role**: Leverage quantitative data to create a digital marketing campaign that raises awareness about the impact of physical inactivity on women. This campaign will educate users on the importance of staying active and emphasize how Bellabeat empowers women to "be active in their own way."
+        > a) Initial Focus: Target existing app users through email and social media campaigns.
+        > b) Bellabeat's Unique Value: Showcase how the app's personalized features can support women in achieving their activity goals.
+        > c) Measure Success: Evaluate the campaign’s performance to refine strategies before scaling to other regions.
+
      
