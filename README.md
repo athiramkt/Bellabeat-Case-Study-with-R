@@ -603,7 +603,7 @@ With a clear understanding of the data, we can now proceed with key data cleanin
 
 **Daily dataframes**
 ``` r
-# daily_activity ---------------------------
+#daily_activity ---------------------------
 daily_activity <-
   daily_activity %>% 
   rename(
@@ -638,7 +638,7 @@ daily_activity <-
     )
  ```   
 ``` r
-# daily_calories ---------------------------
+#daily_calories ---------------------------
 daily_calories <-
   daily_calories %>% 
   rename(
@@ -726,7 +726,7 @@ daily_steps <-
   )
    ```
    ``` r
-# weight_log ---------------------------
+#weight_log ---------------------------
 weight_log <-
   weight_log %>% 
   rename(
@@ -776,7 +776,7 @@ hourly_calories <-
   )
 ```
 ``` r
-# hourly_intensities ---------------------------
+#hourly_intensities ---------------------------
 hourly_intensities <- 
   hourly_intensities %>% 
   rename(
@@ -823,7 +823,7 @@ hourly_steps <-
 
 **Minute dataframes**
 ``` r
-# minute_sleep ---------------------------
+#minute_sleep ---------------------------
 minute_sleep <-
   minute_sleep %>% 
   rename(
@@ -884,7 +884,7 @@ sleep_summary <-
   )
 ```
 ``` r
-# Merge these two daily sleep dfs into one ---------------------------
+#Merge these two daily sleep dfs into one ---------------------------
 sleep_data <- merge(x = daily_sleep, y = sleep_summary, by = c("id", "activity_date"), all = TRUE)
 ```
 ## ANALYZE
@@ -926,7 +926,7 @@ n_distinct(weight_log$Id)
 ```
 **Hourly dataframes**
 ``` r
-# There are 33 users (one user per unique id) in the hourly dfs
+#There are 33 users (one user per unique id) in the hourly dfs
 n_distinct(hourly_calories$id)
 [1] 33
 
@@ -938,7 +938,7 @@ n_distinct(hourly_intensities$id)
 ```
 **Minute dataframe**
 ``` r
-# There are 24 users (one user per unique id) in the minute df
+#There are 24 users (one user per unique id) in the minute df
 n_distinct(minute_sleep$id)
 [1] 24
 ```
@@ -1463,7 +1463,7 @@ Before proceeding with our analysis on the merged dataframes, let’s perform ad
 **Delete old dataframes**: Free up RAM by removing dataframes that are no longer needed for the analysis.
 
 ```r
-# List all objects in current R workspace ---------------------------
+#List all objects in current R workspace ---------------------------
 ls()
 
  [1] "daily_activity"     "daily_calories"     "daily_data"        
@@ -1546,7 +1546,7 @@ daily_hplot +
  ![Descriptive Alt Text](daily_h1.png)
  
 ```r
-# Histogram plot for daily_light_sed_m ---------------------------
+#Histogram plot for daily_light_sed_m ---------------------------
 (bw <- nclass.FD(daily_data$daily_light_sed_m))
 [1] 15
 
@@ -1562,7 +1562,7 @@ daily_hplot +
  ![Descriptive Alt Text](Daily_Rplot2.png)
  
 ```r
-# Histogram plot for total_steps ---------------------------
+#Histogram plot for total_steps ---------------------------
 (bw <- nclass.FD(daily_data$total_steps))
 
 [1] 26
@@ -1665,7 +1665,7 @@ weekly_data %>%
  Max.   :1058.00   Max.   :10080 
 ```
 ```r
-# Weekly data for total steps and calories ---------------------------
+#Weekly data for total steps and calories ---------------------------
 weekly_data %>%
   ungroup() %>%
   select(
@@ -1785,7 +1785,7 @@ labels_wmy <- c(
   "Week 15\nApr-16", "Week 16\nApr-16", "Week 17\nApr-16", "Week 18\nMay-16",
   "Week 19\nMay-16"
 )
-#create df to use in next plot ---------------------------
+#Create df to use in next plot ---------------------------
 weekly_moderate_150_300 <- as.data.frame(
   weekly_data %>%
     group_by(
@@ -1906,10 +1906,10 @@ weekly_vigorous_75_150 <-
     )
 weekly_vigorous_75_150_table <- 
   cbind(c("150+ ", "75 - 150 ", "0 - 75 "), weekly_vigorous_75_150[, 4])
-# Create weekly_vigorous_p ---------------------------
+#Create weekly_vigorous_p ---------------------------
 weekly_vigorous_p <- 
   ggplot(weekly_data, aes(x = week_number, y = weekly_vigorous_m))
-# Add layers to weekly_vigorous_p ---------------------------
+#Add layers to weekly_vigorous_p ---------------------------
 weekly_vigorous_p +
   geom_point(
     data = weekly_data[which(weekly_data$weekly_vigorous_m >= 150), ],
@@ -2019,10 +2019,10 @@ weekly_moderate_vigorous_150_300 <-
 )
 weekly_moderate_vigorous_150_300_table <- 
   cbind(c("300+ ", "150 - 300 ", "0 - 150 "), weekly_moderate_vigorous_150_300[, 4])
-# Create weekly_moderate_vigorous_p ---------------------------
+#Create weekly_moderate_vigorous_p ---------------------------
 weekly_moderate_vigorous_p <- 
   ggplot(weekly_data, aes(x = week_number, y = weekly_mod_vig_m))
-# Add layers to weekly_moderate_vigorous_p ---------------------------
+#Add layers to weekly_moderate_vigorous_p ---------------------------
 weekly_moderate_vigorous_p +
   geom_point(
     data = weekly_data[which(weekly_data$weekly_mod_vig_m >= 300), ],
@@ -2121,10 +2121,10 @@ weekly_moderate_vigorous_p +
 
 ```r
 ggsave(filename = "Moderate_vigorous_activity_per_week_color.png", path = "images")
-# Create basic graph showing 154 totals in grey ---------------------------
+#Create basic graph showing 154 totals in grey ---------------------------
 weekly_moderate_vigorous_p <- 
   ggplot(weekly_data, aes(x = week_number, y = weekly_mod_vig_m))
-# Add layers ---------------------------
+#Add layers ---------------------------
 weekly_moderate_vigorous_p +
   geom_point(
     data = weekly_data[which(weekly_data$weekly_mod_vig_m >= 300), ],
