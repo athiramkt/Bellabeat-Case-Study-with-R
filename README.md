@@ -2227,17 +2227,12 @@ In the final step of the data analysis process, we will provide recommendations 
 Develop and curate new channels centered around the concept of “Active Minutes.” These channels will provide engaging content and resources to inspire women to integrate more physical activity into their daily lives.
 
 > 3. **Turn Health Data and Research Into Actionable Insights**:
-Leverage in-app notifications to provide users with both general health tips and personalized wellness updates. 
-
-For example: "During weeks when you exceed your average of 133 active minutes, your stress sensitivity score decreases by an average of 3 points." This approach transforms data into meaningful, achievable insights to motivate and guide users toward improved wellness.
+Leverage in-app notifications to provide users with both general health tips and personalized wellness updates. For example: "During weeks when you exceed your average of 133 active minutes, your stress sensitivity score decreases by an average of 3 points." This approach transforms data into meaningful, achievable insights to motivate and guide users toward improved wellness.
 
 > 4. **Tailor In-App Engagement for Different Customer Segments**:
-Celebrate users who meet their weekly active minute goals with in-app notifications and encourage them to share their achievements on social media. For users who fall short of their goals, provide motivational messages and actionable tips through notifications, showing them ways to boost their physical activity. 
-
-Adjust marketing strategies as customers transition between segments (e.g., low to high achievers) and incorporate their feedback to refine the experience.
+Celebrate users who meet their weekly active minute goals with in-app notifications and encourage them to share their achievements on social media. For users who fall short of their goals, provide motivational messages and actionable tips through notifications, showing them ways to boost their physical activity. Adjust marketing strategies as customers transition between segments (e.g., low to high achievers) and incorporate their feedback to refine the experience.
 
 > 5. **Continuously Monitor, Evaluate, and Improve the Campaign**:
 Track customer sentiment across marketing channels, such as social media mentions, user reviews, and other key performance indicators (KPIs), and refine strategies accordingly. 
-
 For in-app notifications, leverage qualitative feedback (e.g., user ratings or like/dislike buttons) alongside quantitative metrics (e.g., impressions versus click-through rates) to measure effectiveness. Regularly assess whether the campaign outcomes align with expectations and identify any unexpected trends or insights to optimize future efforts.
      
