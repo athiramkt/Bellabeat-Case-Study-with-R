@@ -2199,7 +2199,7 @@ weekly_moderate_vigorous_p +
 This shows that the largest proportion (45%) of the 154 weekly activity totals fall short of the 150-minute minimum. This trend in physical activity among smart device users offers valuable insights.
 
 
-## ASK
+## ACT
 
 In the final step of the data analysis process, we will provide recommendations to increase the number of customers on the Bellabeat App. But before that, we'll present the key insights.
 
